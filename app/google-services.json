@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "444313076811",
+    "project_id": "guardianai-5400b",
+    "storage_bucket": "guardianai-5400b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:444313076811:android:965072d24ed6e2403739ce",
+        "android_client_info": {
+          "package_name": "com.example.guardianai"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwTtRfibd_oJDwFTZe2YDUySizFUISWK4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -2,43 +2,51 @@ package com.example.guardianai
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 
-class LoginActivity : AppCompatActivity() {
+class SignupActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_login)
+        setContentView(R.layout.activity_signup)
 
         // Firebase Authentication
         auth = FirebaseAuth.getInstance()
 
-        // Email and Password fields
+        // UI references
+        val etName = findViewById<TextInputEditText>(R.id.etName)
         val etEmail = findViewById<TextInputEditText>(R.id.etEmail)
         val etPassword = findViewById<TextInputEditText>(R.id.etPassword)
+        val etConfirmPassword =
+            findViewById<TextInputEditText>(R.id.etConfirmPassword)
 
-        // Login button
-        val btnLogin = findViewById<MaterialButton>(R.id.btnLogin)
+        val btnSignup = findViewById<MaterialButton>(R.id.btnSignup)
 
-        // Sign Up text
-        val tvSignup = findViewById<TextView>(R.id.tvSignup)
+        // LOGIN TEXT
+        val tvLogin = findViewById<android.widget.TextView>(R.id.tvLogin)
 
-        // =========================
-        // LOGIN BUTTON
-        // =========================
+        // CREATE ACCOUNT
+        btnSignup.setOnClickListener {
 
-        btnLogin.setOnClickListener {
-
+            val name = etName.text.toString().trim()
             val email = etEmail.text.toString().trim()
             val password = etPassword.text.toString().trim()
+            val confirmPassword =
+                etConfirmPassword.text.toString().trim()
+
+            // Name validation
+            if (name.isEmpty()) {
+                etName.error = "Please enter your name"
+                etName.requestFocus()
+                return@setOnClickListener
+            }
 
             // Email validation
             if (email.isEmpty()) {
@@ -49,12 +57,12 @@ class LoginActivity : AppCompatActivity() {
 
             // Password validation
             if (password.isEmpty()) {
-                etPassword.error = "Please enter your password"
+                etPassword.error = "Please enter a password"
                 etPassword.requestFocus()
                 return@setOnClickListener
             }
 
-            // Password length validation
+            // Minimum password length
             if (password.length < 6) {
                 etPassword.error =
                     "Password must be at least 6 characters"
@@ -62,63 +70,64 @@ class LoginActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Disable button while login is processing
-            btnLogin.isEnabled = false
-            btnLogin.text = "LOGGING IN..."
+            // Confirm password
+            if (confirmPassword.isEmpty()) {
+                etConfirmPassword.error =
+                    "Please confirm your password"
+                etConfirmPassword.requestFocus()
+                return@setOnClickListener
+            }
 
-            // Firebase Login
-            auth.signInWithEmailAndPassword(email, password)
+            // Password matching
+            if (password != confirmPassword) {
+                etConfirmPassword.error =
+                    "Passwords do not match"
+                etConfirmPassword.requestFocus()
+                return@setOnClickListener
+            }
+
+            // Firebase account creation
+            auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
 
                     if (task.isSuccessful) {
 
                         Toast.makeText(
                             this,
-                            "Login successful!",
+                            "Account created successfully!",
                             Toast.LENGTH_SHORT
                         ).show()
 
-                        // Open MainActivity
+                        // Go to Login screen
                         val intent = Intent(
                             this,
-                            MainActivity::class.java
+                            LoginActivity::class.java
                         )
 
                         startActivity(intent)
-
-                        // Don't return to Login screen
                         finish()
 
                     } else {
 
-                        // Enable button again
-                        btnLogin.isEnabled = true
-                        btnLogin.text = "LOGIN   →"
-
-                        val errorMessage =
-                            task.exception?.message ?: "Login failed"
-
                         Toast.makeText(
                             this,
-                            errorMessage,
+                            "Signup failed: ${task.exception?.message}",
                             Toast.LENGTH_LONG
                         ).show()
                     }
                 }
         }
 
-        // =========================
-        // SIGN UP
-        // =========================
-
-        tvSignup.setOnClickListener {
+        // Already have account → Login
+        tvLogin.setOnClickListener {
 
             val intent = Intent(
                 this,
-                SignupActivity::class.java
+                LoginActivity::class.java
             )
 
             startActivity(intent)
+            finish()
         }
     }
 }
