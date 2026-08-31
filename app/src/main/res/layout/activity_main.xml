@@ -308,18 +308,20 @@
                 android:textSize="12sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/navContacts"
+                app:layout_constraintEnd_toStartOf="@id/tvContacts"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/navContacts"
+                android:id="@+id/tvContacts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="👥\nContacts"
                 android:textColor="#7B8496"
                 android:textSize="12sp"
+                android:clickable="true"
+                android:focusable="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/navProfile"
                 app:layout_constraintStart_toEndOf="@id/navHome"
@@ -335,7 +337,7 @@
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/navContacts"
+                app:layout_constraintStart_toEndOf="@id/tvContacts"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
