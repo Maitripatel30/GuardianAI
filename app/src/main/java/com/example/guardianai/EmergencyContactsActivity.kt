@@ -21,11 +21,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class EmergencyContactsActivity : AppCompatActivity() {
 
-    // Firebase
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
 
-    // Views
     private lateinit var btnAddContact: MaterialButton
     private lateinit var cardEmpty: MaterialCardView
     private lateinit var contactsContainer: ConstraintLayout
@@ -35,16 +33,8 @@ class EmergencyContactsActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_emergency_contacts)
 
-        // ==============================
-        // FIREBASE INITIALIZATION
-        // ==============================
-
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
-
-        // ==============================
-        // FIND VIEWS
-        // ==============================
 
         btnAddContact = findViewById(R.id.btnAddContact)
         cardEmpty = findViewById(R.id.cardEmpty)
@@ -52,25 +42,13 @@ class EmergencyContactsActivity : AppCompatActivity() {
 
         val tvBack = findViewById<TextView>(R.id.tvBack)
 
-        // ==============================
-        // BACK BUTTON
-        // ==============================
-
         tvBack.setOnClickListener {
             finish()
         }
 
-        // ==============================
-        // ADD CONTACT BUTTON
-        // ==============================
-
         btnAddContact.setOnClickListener {
             showAddContactDialog()
         }
-
-        // ==============================
-        // LOAD SAVED CONTACTS
-        // ==============================
 
         loadContactsFromFirebase()
     }
@@ -84,13 +62,11 @@ class EmergencyContactsActivity : AppCompatActivity() {
         val dialogView = LayoutInflater.from(this)
             .inflate(R.layout.dialog_add_contact, null)
 
-        val etName = dialogView.findViewById<EditText>(
-            R.id.etContactName
-        )
+        val etName =
+            dialogView.findViewById<EditText>(R.id.etContactName)
 
-        val etPhone = dialogView.findViewById<EditText>(
-            R.id.etContactPhone
-        )
+        val etPhone =
+            dialogView.findViewById<EditText>(R.id.etContactPhone)
 
         val dialog = AlertDialog.Builder(this)
             .setTitle("👥 Add Emergency Contact")
@@ -101,9 +77,8 @@ class EmergencyContactsActivity : AppCompatActivity() {
 
         dialog.setOnShowListener {
 
-            val saveButton = dialog.getButton(
-                AlertDialog.BUTTON_POSITIVE
-            )
+            val saveButton =
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE)
 
             saveButton.setOnClickListener {
 
@@ -115,10 +90,6 @@ class EmergencyContactsActivity : AppCompatActivity() {
                     .toString()
                     .trim()
 
-                // ==============================
-                // NAME VALIDATION
-                // ==============================
-
                 if (name.isEmpty()) {
 
                     etName.error = "Enter contact name"
@@ -126,10 +97,6 @@ class EmergencyContactsActivity : AppCompatActivity() {
 
                     return@setOnClickListener
                 }
-
-                // ==============================
-                // PHONE VALIDATION
-                // ==============================
 
                 if (phone.isEmpty()) {
 
@@ -149,10 +116,6 @@ class EmergencyContactsActivity : AppCompatActivity() {
                     return@setOnClickListener
                 }
 
-                // ==============================
-                // SAVE TO FIREBASE
-                // ==============================
-
                 saveContactToFirebase(
                     name,
                     phone,
@@ -165,7 +128,7 @@ class EmergencyContactsActivity : AppCompatActivity() {
     }
 
     // =====================================================
-    // SAVE CONTACT TO FIRESTORE
+    // SAVE CONTACT - DUPLICATE CHECK
     // =====================================================
 
     private fun saveContactToFirebase(
@@ -176,7 +139,6 @@ class EmergencyContactsActivity : AppCompatActivity() {
 
         val currentUser = auth.currentUser
 
-        // User login check
         if (currentUser == null) {
 
             Toast.makeText(
@@ -190,42 +152,91 @@ class EmergencyContactsActivity : AppCompatActivity() {
 
         val userId = currentUser.uid
 
-        val contactData = hashMapOf(
-            "name" to name,
-            "phone" to phone
-        )
-
+        // First check existing contacts
         firestore
             .collection("users")
             .document(userId)
             .collection("emergencyContacts")
-            .add(contactData)
-            .addOnSuccessListener {
+            .get()
+            .addOnSuccessListener { documents ->
 
-                Toast.makeText(
-                    this,
-                    "Contact added successfully!",
-                    Toast.LENGTH_SHORT
-                ).show()
+                // Check duplicate name + phone
+                val duplicateExists = documents.any { document ->
 
-                // Close dialog
-                dialog.dismiss()
+                    val existingName =
+                        document.getString("name") ?: ""
 
-                // Reload contacts from Firebase
-                loadContactsFromFirebase()
+                    val existingPhone =
+                        document.getString("phone") ?: ""
+
+                    existingName.equals(
+                        name,
+                        ignoreCase = true
+                    ) && existingPhone == phone
+                }
+
+                // =====================================
+                // DUPLICATE FOUND
+                // =====================================
+
+                if (duplicateExists) {
+
+                    Toast.makeText(
+                        this,
+                        "This contact is already saved!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    return@addOnSuccessListener
+                }
+
+                // =====================================
+                // SAVE NEW CONTACT
+                // =====================================
+
+                val contactData = hashMapOf(
+                    "name" to name,
+                    "phone" to phone
+                )
+
+                firestore
+                    .collection("users")
+                    .document(userId)
+                    .collection("emergencyContacts")
+                    .add(contactData)
+                    .addOnSuccessListener {
+
+                        Toast.makeText(
+                            this,
+                            "Contact added successfully!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        dialog.dismiss()
+
+                        loadContactsFromFirebase()
+                    }
+                    .addOnFailureListener { exception ->
+
+                        Toast.makeText(
+                            this,
+                            "Failed to save contact: ${exception.message}",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
             }
             .addOnFailureListener { exception ->
 
                 Toast.makeText(
                     this,
-                    "Failed to save contact: ${exception.message}",
+                    "Unable to check contacts: ${exception.message}",
                     Toast.LENGTH_LONG
                 ).show()
             }
     }
 
     // =====================================================
-    // LOAD CONTACTS FROM FIREBASE
+    // LOAD CONTACTS
     // =====================================================
 
     private fun loadContactsFromFirebase() {
@@ -245,31 +256,25 @@ class EmergencyContactsActivity : AppCompatActivity() {
             .get()
             .addOnSuccessListener { documents ->
 
-                // Remove old cards
                 contactsContainer.removeAllViews()
 
-                if (documents.isEmpty()) {
+                // Prevent duplicate cards on screen
+                val displayedContacts =
+                    mutableSetOf<String>()
 
-                    // Show empty card
-                    cardEmpty.visibility = View.VISIBLE
+                for (document in documents) {
 
-                    contactsContainer.visibility = View.GONE
+                    val name =
+                        document.getString("name") ?: ""
 
-                } else {
+                    val phone =
+                        document.getString("phone") ?: ""
 
-                    // Hide empty card
-                    cardEmpty.visibility = View.GONE
+                    val contactKey =
+                        "$name|$phone"
 
-                    // Show contacts
-                    contactsContainer.visibility = View.VISIBLE
-
-                    for (document in documents) {
-
-                        val name =
-                            document.getString("name") ?: ""
-
-                        val phone =
-                            document.getString("phone") ?: ""
+                    // Only display once
+                    if (displayedContacts.add(contactKey)) {
 
                         showContact(
                             name,
@@ -278,8 +283,25 @@ class EmergencyContactsActivity : AppCompatActivity() {
                         )
                     }
                 }
+
+                if (displayedContacts.isEmpty()) {
+
+                    cardEmpty.visibility =
+                        View.VISIBLE
+
+                    contactsContainer.visibility =
+                        View.GONE
+
+                } else {
+
+                    cardEmpty.visibility =
+                        View.GONE
+
+                    contactsContainer.visibility =
+                        View.VISIBLE
+                }
             }
-            .addOnFailureListener { exception ->
+            .addOnFailureListener {
 
                 Toast.makeText(
                     this,
@@ -299,11 +321,8 @@ class EmergencyContactsActivity : AppCompatActivity() {
         documentId: String
     ) {
 
-        // ==============================
-        // CONTACT CARD
-        // ==============================
-
-        val contactCard = MaterialCardView(this)
+        val contactCard =
+            MaterialCardView(this)
 
         val cardParams =
             ConstraintLayout.LayoutParams(
@@ -318,7 +337,8 @@ class EmergencyContactsActivity : AppCompatActivity() {
             0
         )
 
-        contactCard.layoutParams = cardParams
+        contactCard.layoutParams =
+            cardParams
 
         contactCard.radius =
             dpToPx(18).toFloat()
@@ -336,10 +356,7 @@ class EmergencyContactsActivity : AppCompatActivity() {
         contactCard.strokeColor =
             Color.rgb(220, 222, 240)
 
-        // ==============================
-        // MAIN HORIZONTAL LAYOUT
-        // ==============================
-
+        // Main layout
         val mainLayout =
             LinearLayout(this)
 
@@ -362,16 +379,11 @@ class EmergencyContactsActivity : AppCompatActivity() {
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
 
-        // ==============================
-        // CONTACT ICON
-        // ==============================
-
+        // Icon
         val icon = TextView(this)
 
         icon.text = "👤"
-
         icon.textSize = 25f
-
         icon.gravity = Gravity.CENTER
 
         val iconParams =
@@ -392,10 +404,7 @@ class EmergencyContactsActivity : AppCompatActivity() {
             iconParams
         )
 
-        // ==============================
-        // TEXT LAYOUT
-        // ==============================
-
+        // Text layout
         val textLayout =
             LinearLayout(this)
 
@@ -412,14 +421,10 @@ class EmergencyContactsActivity : AppCompatActivity() {
                 1f
             )
 
-        // ==============================
-        // CONTACT NAME
-        // ==============================
-
+        // Name
         val nameText = TextView(this)
 
         nameText.text = name
-
         nameText.textSize = 17f
 
         nameText.setTypeface(
@@ -431,14 +436,10 @@ class EmergencyContactsActivity : AppCompatActivity() {
             Color.rgb(24, 43, 91)
         )
 
-        // ==============================
-        // PHONE NUMBER
-        // ==============================
-
+        // Phone
         val phoneText = TextView(this)
 
         phoneText.text = phone
-
         phoneText.textSize = 14f
 
         phoneText.setTextColor(
@@ -452,7 +453,6 @@ class EmergencyContactsActivity : AppCompatActivity() {
             0
         )
 
-        // Add text views
         textLayout.addView(nameText)
         textLayout.addView(phoneText)
 
@@ -461,16 +461,11 @@ class EmergencyContactsActivity : AppCompatActivity() {
             textParams
         )
 
-        // ==============================
-        // DELETE BUTTON
-        // ==============================
-
+        // Delete button
         val deleteButton = TextView(this)
 
         deleteButton.text = "✕"
-
         deleteButton.textSize = 20f
-
         deleteButton.gravity = Gravity.CENTER
 
         deleteButton.setTextColor(
@@ -497,17 +492,9 @@ class EmergencyContactsActivity : AppCompatActivity() {
             deleteButton
         )
 
-        // ==============================
-        // ADD LAYOUT TO CARD
-        // ==============================
-
         contactCard.addView(
             mainLayout
         )
-
-        // ==============================
-        // ADD CARD TO CONTAINER
-        // ==============================
 
         contactsContainer.addView(
             contactCard
@@ -540,25 +527,13 @@ class EmergencyContactsActivity : AppCompatActivity() {
             .delete()
             .addOnSuccessListener {
 
-                contactsContainer.removeView(
-                    contactCard
-                )
-
-                // Check if no contacts remain
-                if (contactsContainer.childCount == 0) {
-
-                    contactsContainer.visibility =
-                        View.GONE
-
-                    cardEmpty.visibility =
-                        View.VISIBLE
-                }
-
                 Toast.makeText(
                     this,
                     "$name removed",
                     Toast.LENGTH_SHORT
                 ).show()
+
+                loadContactsFromFirebase()
             }
             .addOnFailureListener {
 
