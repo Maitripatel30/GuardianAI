@@ -7,7 +7,8 @@
     android:layout_height="match_parent"
     android:background="#F6F7FF">
 
-    <!-- Top Background -->
+    <!-- ================= TOP BACKGROUND ================= -->
+
     <View
         android:id="@+id/topBackground"
         android:layout_width="0dp"
@@ -17,7 +18,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- App Name -->
+    <!-- ================= APP NAME ================= -->
+
     <TextView
         android:id="@+id/tvAppName"
         android:layout_width="wrap_content"
@@ -31,22 +33,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Notification -->
-    <ImageView
+    <!-- ================= NOTIFICATION ================= -->
+
+    <TextView
         android:id="@+id/ivNotification"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        android:background="@drawable/social_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="18dp"
+        android:background="@drawable/notification_button"
+        android:clickable="true"
         android:contentDescription="Notifications"
-        android:padding="11dp"
-        android:src="@android:drawable/ic_popup_reminder"
-        android:tint="@android:color/white"
+        android:focusable="true"
+        android:gravity="center"
+        android:text="🔔"
+        android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Greeting -->
+    <!-- ================= GREETING ================= -->
+
     <TextView
         android:id="@+id/tvGreeting"
         android:layout_width="wrap_content"
@@ -72,7 +78,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvGreeting" />
 
-    <!-- Protection Card -->
+    <!-- ================= PROTECTION CARD ================= -->
+
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardProtection"
         android:layout_width="0dp"
@@ -93,7 +100,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <!-- Shield -->
             <TextView
                 android:id="@+id/tvShield"
                 android:layout_width="60dp"
@@ -145,13 +151,14 @@
 
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- Emergency Section -->
+    <!-- ================= QUICK ACTIONS ================= -->
+
     <TextView
         android:id="@+id/tvQuickActions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="22dp"
+        android:layout_marginTop="18dp"
         android:text="Quick Actions"
         android:textColor="#182B5B"
         android:textSize="20sp"
@@ -159,13 +166,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cardProtection" />
 
-    <!-- SOS Card -->
+    <!-- ================= SOS CARD ================= -->
+
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardSOS"
         android:layout_width="0dp"
-        android:layout_height="120dp"
+        android:layout_height="115dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="8dp"
         android:clickable="true"
         android:focusable="true"
@@ -220,13 +228,14 @@
 
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- Location Card -->
+    <!-- ================= LOCATION CARD ================= -->
+
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardLocation"
         android:layout_width="0dp"
-        android:layout_height="120dp"
+        android:layout_height="115dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
         android:clickable="true"
         android:focusable="true"
@@ -281,12 +290,94 @@
 
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- Bottom Navigation -->
+    <!-- ================= SAFETY CHECK CARD ================= -->
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardSafetyCheck"
+        android:layout_width="0dp"
+        android:layout_height="92dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="20dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardBackgroundColor="#F1FFF7"
+        app:cardCornerRadius="22dp"
+        app:cardElevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cardSOS"
+        app:strokeColor="#C8EBD8"
+        app:strokeWidth="1dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="12dp">
+
+            <TextView
+                android:id="@+id/tvSafetyIcon"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:gravity="center"
+                android:text="🛡️"
+                android:textSize="28sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvSafetyTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="Safety Check"
+                android:textColor="#16794C"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@id/tvSafetyArrow"
+                app:layout_constraintStart_toEndOf="@id/tvSafetyIcon"
+                app:layout_constraintTop_toTopOf="@id/tvSafetyIcon" />
+
+            <TextView
+                android:id="@+id/tvSafetySub"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="3dp"
+                android:text="Set a timer to confirm you are safe"
+                android:textColor="#6D8177"
+                android:textSize="11sp"
+                app:layout_constraintEnd_toStartOf="@id/tvSafetyArrow"
+                app:layout_constraintStart_toEndOf="@id/tvSafetyIcon"
+                app:layout_constraintTop_toBottomOf="@id/tvSafetyTitle" />
+
+            <TextView
+                android:id="@+id/tvSafetyArrow"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:text="›"
+                android:textColor="#16794C"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- ================= BOTTOM NAVIGATION ================= -->
+
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/bottomNav"
         android:layout_width="0dp"
-        android:layout_height="70dp"
-        android:layout_margin="14dp"
+        android:layout_height="65dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginBottom="12dp"
         app:cardBackgroundColor="#FFFFFF"
         app:cardCornerRadius="25dp"
         app:cardElevation="8dp"
@@ -316,12 +407,12 @@
                 android:id="@+id/tvContacts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
                 android:gravity="center"
                 android:text="👥\nContacts"
                 android:textColor="#7B8496"
                 android:textSize="12sp"
-                android:clickable="true"
-                android:focusable="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/navProfile"
                 app:layout_constraintStart_toEndOf="@id/navHome"
@@ -335,6 +426,8 @@
                 android:text="👤\nProfile"
                 android:textColor="#7B8496"
                 android:textSize="12sp"
+                android:clickable="true"
+                android:focusable="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/tvContacts"

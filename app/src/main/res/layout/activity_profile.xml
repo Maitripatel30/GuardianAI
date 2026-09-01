@@ -7,17 +7,19 @@
     android:layout_height="match_parent"
     android:background="#F5F7FF">
 
-    <!-- Header -->
+    <!-- ================= HEADER ================= -->
+
     <View
         android:id="@+id/headerBackground"
         android:layout_width="0dp"
-        android:layout_height="170dp"
+        android:layout_height="205dp"
         android:background="@drawable/login_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Back Button -->
+
     <TextView
         android:id="@+id/tvBack"
         android:layout_width="45dp"
@@ -35,39 +37,71 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Profile Icon -->
-    <TextView
-        android:id="@+id/tvProfileIcon"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="18dp"
-        android:background="#30FFFFFF"
-        android:gravity="center"
-        android:text="👤"
-        android:textSize="35sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvBack" />
-
     <!-- Title -->
+
     <TextView
-        android:id="@+id/tvProfileTitle"
+        android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="25dp"
         android:text="My Profile"
         android:textColor="@android:color/white"
-        android:textSize="24sp"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Profile Avatar -->
+
+    <TextView
+        android:id="@+id/tvProfileIcon"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_marginTop="62dp"
+        android:background="@drawable/glow_circle"
+        android:gravity="center"
+        android:text="👤"
+        android:textSize="43sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- User Name -->
+
+    <TextView
+        android:id="@+id/tvProfileName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Guardian User"
+        android:textColor="@android:color/white"
+        android:textSize="17sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvProfileIcon" />
 
-    <!-- Account Card -->
+    <!-- Protection Status -->
+
+    <TextView
+        android:id="@+id/tvProtectionStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:text="●  Guardian Protected"
+        android:textColor="#D7FFD9"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvProfileName" />
+
+    <!-- ================= ACCOUNT CARD ================= -->
+
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardAccount"
         android:layout_width="0dp"
-        android:layout_height="150dp"
+        android:layout_height="145dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="25dp"
         android:layout_marginEnd="20dp"
@@ -83,137 +117,209 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="20dp">
+            android:padding="18dp">
 
-            <TextView
-                android:id="@+id/tvAccountIcon"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:gravity="center"
-                android:text="🔐"
-                android:textSize="25sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            <!-- Account Title -->
 
             <TextView
                 android:id="@+id/tvAccountTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:text="Account Information"
+                android:text="👤  Account Information"
                 android:textColor="#182B5B"
                 android:textSize="17sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@id/tvAccountIcon"
-                app:layout_constraintTop_toTopOf="@id/tvAccountIcon" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Email Label -->
 
             <TextView
                 android:id="@+id/tvEmailLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="10dp"
-                android:text="Email"
+                android:layout_marginTop="17dp"
+                android:text="Email Address"
                 android:textColor="#7B8496"
                 android:textSize="12sp"
-                app:layout_constraintStart_toEndOf="@id/tvAccountIcon"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvAccountTitle" />
+
+            <!-- Email -->
 
             <TextView
                 android:id="@+id/tvEmail"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="2dp"
-                android:text="user@example.com"
+                android:layout_marginTop="3dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="user@gmail.com"
                 android:textColor="#182B5B"
-                android:textSize="14sp"
+                android:textSize="15sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/tvAccountIcon"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvEmailLabel" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- Security Card -->
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardSecurity"
+
+    <!-- ================= EDIT PROFILE BUTTON ================= -->
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnEditProfile"
         android:layout_width="0dp"
-        android:layout_height="90dp"
+        android:layout_height="52dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="15dp"
         android:layout_marginEnd="20dp"
-        app:cardBackgroundColor="#FFFFFF"
-        app:cardCornerRadius="20dp"
-        app:cardElevation="3dp"
+        android:text="✏️  EDIT PROFILE"
+        android:textColor="#5146D8"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:backgroundTint="#FFFFFF"
+        app:cornerRadius="16dp"
+        app:strokeColor="#5146D8"
+        app:strokeWidth="1dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cardAccount"
-        app:strokeColor="#E0E1EF"
+        app:layout_constraintTop_toBottomOf="@id/cardAccount" />
+
+
+    <!-- ================= SAFETY CARD ================= -->
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardSafety"
+        android:layout_width="0dp"
+        android:layout_height="185dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="20dp"
+        app:cardBackgroundColor="#FFFFFF"
+        app:cardCornerRadius="22dp"
+        app:cardElevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnEditProfile"
+        app:strokeColor="#DDDFFF"
         app:strokeWidth="1dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="15dp">
+            android:padding="18dp">
+
+            <!-- Safety Title -->
 
             <TextView
-                android:id="@+id/tvSecurityIcon"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:gravity="center"
-                android:text="🛡️"
-                android:textSize="26sp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:id="@+id/tvSafetyTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🛡️  Safety Status"
+                android:textColor="#182B5B"
+                android:textSize="17sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/tvSecurityTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:text="Guardian AI Security"
-                android:textColor="#182B5B"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@id/tvSecurityIcon"
-                app:layout_constraintTop_toTopOf="@id/tvSecurityIcon" />
+            <!-- Protection -->
 
             <TextView
-                android:id="@+id/tvSecurityStatus"
+                android:id="@+id/tvProtectionLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="5dp"
-                android:text="● Account is secure"
+                android:layout_marginTop="18dp"
+                android:text="🟢  Guardian Protection"
+                android:textColor="#424B5D"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvSafetyTitle" />
+
+            <TextView
+                android:id="@+id/tvProtectionValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ON"
                 android:textColor="#24A148"
-                android:textSize="12sp"
-                app:layout_constraintStart_toEndOf="@id/tvSecurityIcon"
-                app:layout_constraintTop_toBottomOf="@id/tvSecurityTitle" />
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tvProtectionLabel" />
+
+            <!-- Emergency Contacts -->
+
+            <TextView
+                android:id="@+id/tvContactsLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:text="👥  Emergency Contacts"
+                android:textColor="#424B5D"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvProtectionLabel" />
+
+            <TextView
+                android:id="@+id/tvContactsCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textColor="#5146D8"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tvContactsLabel" />
+
+            <!-- SOS -->
+
+            <TextView
+                android:id="@+id/tvSOSLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:text="🚨  SOS System"
+                android:textColor="#424B5D"
+                android:textSize="14sp"
+                android:textStyle="normal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvContactsLabel" />
+
+            <TextView
+                android:id="@+id/tvSOSValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="READY"
+                android:textColor="#24A148"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tvSOSLabel" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- Logout Button -->
+
+    <!-- ================= LOGOUT ================= -->
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnLogout"
         android:layout_width="0dp"
         android:layout_height="55dp"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="18dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="25dp"
         android:text="🚪  LOGOUT"
         android:textColor="@android:color/white"
         android:textSize="15sp"
         android:textStyle="bold"
-        app:backgroundTint="#D64545"
+        app:backgroundTint="#D32F2F"
         app:cornerRadius="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cardSafety" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

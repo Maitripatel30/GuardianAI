@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F7FF">
+
+    <!-- =====================================
+         HEADER
+         ===================================== -->
+
+    <View
+        android:id="@+id/headerBackground"
+        android:layout_width="0dp"
+        android:layout_height="145dp"
+        android:background="@drawable/login_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Back Button -->
+
+    <TextView
+        android:id="@+id/tvBack"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="20dp"
+        android:background="#30FFFFFF"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:text="‹"
+        android:textColor="@android:color/white"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Title -->
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:text="Notifications"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Subtitle -->
+
+    <TextView
+        android:id="@+id/tvSubtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="Your recent safety activity"
+        android:textColor="#E5E2FF"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+
+
+    <!-- =====================================
+         SCROLL AREA
+         ===================================== -->
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/notificationScroll"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        android:paddingBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/headerBackground">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp">
+
+            <!-- =====================================
+                 SOS CARD
+                 ===================================== -->
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardSOSNotification"
+                android:layout_width="0dp"
+                android:layout_height="105dp"
+                android:layout_marginBottom="14dp"
+                app:cardBackgroundColor="#FFF5F5"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:strokeColor="#FFD5D5"
+                app:strokeWidth="1dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="15dp">
+
+                    <TextView
+                        android:id="@+id/tvSOSIcon"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:background="#FFE4E4"
+                        android:gravity="center"
+                        android:text="🚨"
+                        android:textSize="27sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tvSOSTitle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="14dp"
+                        android:text="SOS Activated"
+                        android:textColor="#C62828"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/tvSOSIcon"
+                        app:layout_constraintTop_toTopOf="@id/tvSOSIcon" />
+
+                    <TextView
+                        android:id="@+id/tvSOSDescription"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="14dp"
+                        android:layout_marginTop="4dp"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:text="Emergency SOS was activated."
+                        android:textColor="#6F6670"
+                        android:textSize="12sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/tvSOSIcon"
+                        app:layout_constraintTop_toBottomOf="@id/tvSOSTitle" />
+
+                    <TextView
+                        android:id="@+id/tvSOSTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Recent"
+                        android:textColor="#9B8C8C"
+                        android:textSize="10sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="@id/tvSOSIcon" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+
+            <!-- =====================================
+                 LOCATION CARD
+                 ===================================== -->
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardLocationNotification"
+                android:layout_width="0dp"
+                android:layout_height="105dp"
+                android:layout_marginBottom="14dp"
+                app:cardBackgroundColor="#F2F1FF"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardSOSNotification"
+                app:strokeColor="#D8D5FF"
+                app:strokeWidth="1dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="15dp">
+
+                    <TextView
+                        android:id="@+id/tvLocationIcon"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:background="#E5E2FF"
+                        android:gravity="center"
+                        android:text="📍"
+                        android:textSize="27sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tvLocationTitle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="14dp"
+                        android:text="Location Shared"
+                        android:textColor="#4036A8"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/tvLocationIcon"
+                        app:layout_constraintTop_toTopOf="@id/tvLocationIcon" />
+
+                    <TextView
+                        android:id="@+id/tvLocationDescription"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="14dp"
+                        android:layout_marginTop="4dp"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:text="Your location was shared."
+                        android:textColor="#6E6A80"
+                        android:textSize="12sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/tvLocationIcon"
+                        app:layout_constraintTop_toBottomOf="@id/tvLocationTitle" />
+
+                    <TextView
+                        android:id="@+id/tvLocationTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Recent"
+                        android:textColor="#8E8A9F"
+                        android:textSize="10sp"
+                        app:layout_constraintBottom_toBottomOf="@id/tvLocationIcon"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+
+            <!-- =====================================
+                 CALL CARD
+                 ===================================== -->
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardCallNotification"
+                android:layout_width="0dp"
+                android:layout_height="105dp"
+                android:layout_marginBottom="14dp"
+                app:cardBackgroundColor="#F3FAF5"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardLocationNotification"
+                app:strokeColor="#D2EAD7"
+                app:strokeWidth="1dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="15dp">
+
+                    <TextView
+                        android:id="@+id/tvCallIcon"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:background="#E1F3E5"
+                        android:gravity="center"
+                        android:text="📞"
+                        android:textSize="27sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tvCallTitle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="14dp"
+                        android:text="Emergency Call"
+                        android:textColor="#247A3B"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/tvCallIcon"
+                        app:layout_constraintTop_toTopOf="@id/tvCallIcon" />
+
+                    <TextView
+                        android:id="@+id/tvCallDescription"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="14dp"
+                        android:layout_marginTop="4dp"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:text="Emergency contact call activity."
+                        android:textColor="#647066"
+                        android:textSize="12sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/tvCallIcon"
+                        app:layout_constraintTop_toBottomOf="@id/tvCallTitle" />
+
+                    <TextView
+                        android:id="@+id/tvCallTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Recent"
+                        android:textColor="#7D8C80"
+                        android:textSize="10sp"
+                        app:layout_constraintBottom_toBottomOf="@id/tvCallIcon"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+
+            <!-- =====================================
+                 SAFETY CHECK CARD
+                 ===================================== -->
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardSafetyNotification"
+                android:layout_width="0dp"
+                android:layout_height="105dp"
+                android:layout_marginBottom="20dp"
+                app:cardBackgroundColor="#F4F2FF"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardCallNotification"
+                app:strokeColor="#DCD7FF"
+                app:strokeWidth="1dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="15dp">
+
+                    <TextView
+                        android:id="@+id/tvSafetyIcon"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:background="#E7E3FF"
+                        android:gravity="center"
+                        android:text="🛡️"
+                        android:textSize="27sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tvSafetyTitle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="14dp"
+                        android:text="Safety Check"
+                        android:textColor="#5146D8"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/tvSafetyIcon"
+                        app:layout_constraintTop_toTopOf="@id/tvSafetyIcon" />
+
+                    <TextView
+                        android:id="@+id/tvSafetyDescription"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="14dp"
+                        android:layout_marginTop="4dp"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:text="Safety check activity."
+                        android:textColor="#6F6A82"
+                        android:textSize="12sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/tvSafetyIcon"
+                        app:layout_constraintTop_toBottomOf="@id/tvSafetyTitle" />
+
+                    <TextView
+                        android:id="@+id/tvSafetyTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Recent"
+                        android:textColor="#88839D"
+                        android:textSize="10sp"
+                        app:layout_constraintBottom_toBottomOf="@id/tvSafetyIcon"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

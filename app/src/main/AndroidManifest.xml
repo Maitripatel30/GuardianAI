@@ -49,6 +49,15 @@
         <activity
             android:name=".EmergencyContactsActivity"
             android:exported="false" />
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NotificationsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SafetyCheckActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

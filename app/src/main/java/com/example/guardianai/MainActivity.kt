@@ -1,10 +1,14 @@
 package com.example.guardianai
 
 import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.telephony.SmsManager
 import android.widget.TextView
@@ -13,17 +17,14 @@ import androidx.annotation.RequiresPermission
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.card.MaterialCardView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.os.Build
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 
 class MainActivity : AppCompatActivity() {
 
@@ -34,17 +35,24 @@ class MainActivity : AppCompatActivity() {
     private val CALL_PERMISSION_CODE = 101
     private val LOCATION_PERMISSION_CODE = 102
     private val SMS_PERMISSION_CODE = 103
+    private val NOTIFICATION_PERMISSION_CODE = 104
 
     private var phoneToCall: String = ""
-    private val NOTIFICATION_CHANNEL_ID = "guardian_ai_emergency"
-    private val NOTIFICATION_ID = 1001
-    private val NOTIFICATION_PERMISSION_CODE = 103
 
-    // Pending contacts for SMS
-    private var pendingNames: ArrayList<String> = arrayListOf()
-    private var pendingPhones: ArrayList<String> = arrayListOf()
+    private val NOTIFICATION_CHANNEL_ID =
+        "guardian_ai_emergency"
+
+    private val NOTIFICATION_ID = 1001
+
+    private var pendingNames =
+        ArrayList<String>()
+
+    private var pendingPhones =
+        ArrayList<String>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
@@ -53,8 +61,11 @@ class MainActivity : AppCompatActivity() {
         // FIREBASE
         // =====================================
 
-        auth = FirebaseAuth.getInstance()
-        firestore = FirebaseFirestore.getInstance()
+        auth =
+            FirebaseAuth.getInstance()
+
+        firestore =
+            FirebaseFirestore.getInstance()
 
         // =====================================
         // LOCATION
@@ -63,8 +74,9 @@ class MainActivity : AppCompatActivity() {
         fusedLocationClient =
             LocationServices.getFusedLocationProviderClient(this)
 
-        auth = FirebaseAuth.getInstance()
-        firestore = FirebaseFirestore.getInstance()
+        // =====================================
+        // NOTIFICATION CHANNEL
+        // =====================================
 
         createNotificationChannel()
 
@@ -73,22 +85,46 @@ class MainActivity : AppCompatActivity() {
         // =====================================
 
         val tvUserName =
-            findViewById<TextView>(R.id.tvUserName)
+            findViewById<TextView>(
+                R.id.tvUserName
+            )
 
         val cardSOS =
-            findViewById<MaterialCardView>(R.id.cardSOS)
+            findViewById<MaterialCardView>(
+                R.id.cardSOS
+            )
 
         val cardLocation =
-            findViewById<MaterialCardView>(R.id.cardLocation)
+            findViewById<MaterialCardView>(
+                R.id.cardLocation
+            )
+
+        val cardSafetyCheck =
+            findViewById<MaterialCardView>(
+                R.id.cardSafetyCheck
+            )
+
+        val ivNotification =
+            findViewById<TextView>(
+                R.id.ivNotification
+            )
 
         val navContacts =
-            findViewById<TextView>(R.id.tvContacts)
+            findViewById<TextView>(
+                R.id.tvContacts
+            )
+
+        val navProfile =
+            findViewById<TextView>(
+                R.id.navProfile
+            )
 
         // =====================================
         // CHECK LOGIN
         // =====================================
 
-        val currentUser = auth.currentUser
+        val currentUser =
+            auth.currentUser
 
         if (currentUser == null) {
 
@@ -100,6 +136,7 @@ class MainActivity : AppCompatActivity() {
             )
 
             finish()
+
             return
         }
 
@@ -107,28 +144,50 @@ class MainActivity : AppCompatActivity() {
         // SHOW USER EMAIL
         // =====================================
 
-        val email = currentUser.email
+        val email =
+            currentUser.email
 
         if (!email.isNullOrEmpty()) {
-            tvUserName.text = email
+
+            tvUserName.text =
+                email
+
         } else {
-            tvUserName.text = "Welcome!"
+
+            tvUserName.text =
+                "Welcome!"
         }
 
         // =====================================
-        // SOS BUTTON
+        // SOS
         // =====================================
 
         cardSOS.setOnClickListener {
+
             showSOSConfirmation()
         }
 
         // =====================================
-        // LOCATION BUTTON
+        // LOCATION
         // =====================================
 
         cardLocation.setOnClickListener {
+
             getCurrentLocation()
+        }
+
+        // =====================================
+        // SAFETY CHECK
+        // =====================================
+
+        cardSafetyCheck.setOnClickListener {
+
+            startActivity(
+                Intent(
+                    this,
+                    SafetyCheckActivity::class.java
+                )
+            )
         }
 
         // =====================================
@@ -144,72 +203,113 @@ class MainActivity : AppCompatActivity() {
                 )
             )
         }
+
+        // =====================================
+        // PROFILE
+        // =====================================
+
+        navProfile.setOnClickListener {
+
+            startActivity(
+                Intent(
+                    this,
+                    ProfileActivity::class.java
+                )
+            )
+        }
+
+        // =====================================
+        // NOTIFICATIONS
+        // =====================================
+
+        ivNotification.setOnClickListener {
+
+            startActivity(
+                Intent(
+                    this,
+                    NotificationsActivity::class.java
+                )
+            )
+        }
     }
 
-    // =====================================================
-    // LOCATION
-    // =====================================================
 
     // =====================================================
-// CREATE NOTIFICATION CHANNEL
-// =====================================================
+    // CREATE NOTIFICATION CHANNEL
+    // =====================================================
 
     private fun createNotificationChannel() {
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (
+            Build.VERSION.SDK_INT >=
+            Build.VERSION_CODES.O
+        ) {
 
-            val channel = NotificationChannel(
-                NOTIFICATION_CHANNEL_ID,
-                "Guardian AI Emergency",
-                NotificationManager.IMPORTANCE_HIGH
-            )
+            val channel =
+                NotificationChannel(
+                    NOTIFICATION_CHANNEL_ID,
+                    "Guardian AI Emergency",
+                    NotificationManager.IMPORTANCE_HIGH
+                )
 
             channel.description =
                 "Emergency notifications from Guardian AI"
 
-            val notificationManager =
-                getSystemService(NotificationManager::class.java)
+            val manager =
+                getSystemService(
+                    NotificationManager::class.java
+                )
 
-            notificationManager.createNotificationChannel(channel)
+            manager.createNotificationChannel(
+                channel
+            )
         }
     }
 
 
-// =====================================================
-// SHOW EMERGENCY NOTIFICATION
-// =====================================================
+    // =====================================================
+    // EMERGENCY NOTIFICATION
+    // =====================================================
 
     private fun showEmergencyNotification() {
 
         if (
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
-            ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.POST_NOTIFICATIONS
-            ) != PackageManager.PERMISSION_GRANTED
+            Build.VERSION.SDK_INT >=
+            Build.VERSION_CODES.TIRAMISU
         ) {
 
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.POST_NOTIFICATIONS),
-                NOTIFICATION_PERMISSION_CODE
-            )
+            if (
+                ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
 
-            return
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(
+                        Manifest.permission.POST_NOTIFICATIONS
+                    ),
+                    NOTIFICATION_PERMISSION_CODE
+                )
+
+                return
+            }
         }
 
-        val intent = Intent(
-            this,
-            MainActivity::class.java
-        )
+        val intent =
+            Intent(
+                this,
+                MainActivity::class.java
+            )
 
         val pendingIntent =
-            android.app.PendingIntent.getActivity(
+            PendingIntent.getActivity(
                 this,
                 0,
                 intent,
-                android.app.PendingIntent.FLAG_UPDATE_CURRENT or
-                        android.app.PendingIntent.FLAG_IMMUTABLE
+                PendingIntent.FLAG_UPDATE_CURRENT or
+                        PendingIntent.FLAG_IMMUTABLE
             )
 
         val notification =
@@ -217,9 +317,15 @@ class MainActivity : AppCompatActivity() {
                 this,
                 NOTIFICATION_CHANNEL_ID
             )
-                .setSmallIcon(android.R.drawable.ic_dialog_alert)
-                .setContentTitle("🚨 Guardian AI Emergency")
-                .setContentText("SOS has been activated!")
+                .setSmallIcon(
+                    android.R.drawable.ic_dialog_alert
+                )
+                .setContentTitle(
+                    "🚨 Guardian AI Emergency"
+                )
+                .setContentText(
+                    "SOS has been activated!"
+                )
                 .setStyle(
                     NotificationCompat.BigTextStyle()
                         .bigText(
@@ -227,9 +333,13 @@ class MainActivity : AppCompatActivity() {
                                     "Emergency contacts have been notified."
                         )
                 )
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setPriority(
+                    NotificationCompat.PRIORITY_HIGH
+                )
                 .setAutoCancel(true)
-                .setContentIntent(pendingIntent)
+                .setContentIntent(
+                    pendingIntent
+                )
                 .build()
 
         NotificationManagerCompat
@@ -239,6 +349,12 @@ class MainActivity : AppCompatActivity() {
                 notification
             )
     }
+
+
+    // =====================================================
+    // LOCATION
+    // =====================================================
+
     private fun getCurrentLocation() {
 
         if (
@@ -260,13 +376,19 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-        fusedLocationClient.lastLocation
-            .addOnSuccessListener { location: Location? ->
+        fusedLocationClient
+            .lastLocation
+            .addOnSuccessListener {
+
+                    location: Location? ->
 
                 if (location != null) {
 
-                    val latitude = location.latitude
-                    val longitude = location.longitude
+                    val latitude =
+                        location.latitude
+
+                    val longitude =
+                        location.longitude
 
                     showLocationDialog(
                         latitude,
@@ -292,6 +414,7 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
+
     // =====================================================
     // LOCATION DIALOG
     // =====================================================
@@ -307,18 +430,28 @@ class MainActivity : AppCompatActivity() {
                     "Longitude: $longitude"
 
         AlertDialog.Builder(this)
-            .setTitle("📍 Current Location")
-            .setMessage(message)
-            .setPositiveButton("OPEN MAP") { _, _ ->
+            .setTitle(
+                "📍 Current Location"
+            )
+            .setMessage(
+                message
+            )
+            .setPositiveButton(
+                "OPEN MAP"
+            ) { _, _ ->
 
                 openGoogleMaps(
                     latitude,
                     longitude
                 )
             }
-            .setNegativeButton("CLOSE", null)
+            .setNegativeButton(
+                "CLOSE",
+                null
+            )
             .show()
     }
+
 
     // =====================================================
     // OPEN GOOGLE MAPS
@@ -346,7 +479,9 @@ class MainActivity : AppCompatActivity() {
 
         try {
 
-            startActivity(mapIntent)
+            startActivity(
+                mapIntent
+            )
 
         } catch (e: Exception) {
 
@@ -364,6 +499,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
     // =====================================================
     // SOS CONFIRMATION
     // =====================================================
@@ -371,13 +507,12 @@ class MainActivity : AppCompatActivity() {
     private fun showSOSConfirmation() {
 
         AlertDialog.Builder(this)
-
-            .setTitle("🚨 Emergency SOS")
-
+            .setTitle(
+                "🚨 Emergency SOS"
+            )
             .setMessage(
                 "Are you sure you want to activate SOS?"
             )
-
             .setPositiveButton(
                 "ACTIVATE SOS"
             ) { dialog, _ ->
@@ -386,23 +521,24 @@ class MainActivity : AppCompatActivity() {
 
                 dialog.dismiss()
             }
-
             .setNegativeButton(
                 "CANCEL",
                 null
             )
-
             .show()
     }
+
 
     // =====================================================
     // ACTIVATE SOS
     // =====================================================
 
     private fun activateSOS() {
+
         showEmergencyNotification()
 
-        val currentUser = auth.currentUser
+        val currentUser =
+            auth.currentUser
 
         if (currentUser == null) {
 
@@ -415,23 +551,31 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-        val userId = currentUser.uid
+        val userId =
+            currentUser.uid
 
         firestore
             .collection("users")
             .document(userId)
             .collection("emergencyContacts")
             .get()
-            .addOnSuccessListener { documents ->
+            .addOnSuccessListener {
 
-                if (documents.isEmpty()) {
+                    documents ->
+
+                if (documents.isEmpty) {
 
                     AlertDialog.Builder(this)
-                        .setTitle("🚨 SOS Activated")
+                        .setTitle(
+                            "🚨 SOS Activated"
+                        )
                         .setMessage(
                             "No emergency contacts are saved."
                         )
-                        .setPositiveButton("OK", null)
+                        .setPositiveButton(
+                            "OK",
+                            null
+                        )
                         .show()
 
                     return@addOnSuccessListener
@@ -443,15 +587,20 @@ class MainActivity : AppCompatActivity() {
                 for (document in documents) {
 
                     val name =
-                        document.getString("name")
-                            ?: "Unknown"
+                        document.getString(
+                            "name"
+                        ) ?: "Unknown"
 
                     val phone =
-                        document.getString("phone")
-                            ?: ""
+                        document.getString(
+                            "phone"
+                        ) ?: ""
 
                     if (phone.isNotEmpty()) {
-                        uniqueContacts[phone] = name
+
+                        uniqueContacts[
+                            phone
+                        ] = name
                     }
                 }
 
@@ -466,11 +615,37 @@ class MainActivity : AppCompatActivity() {
                     return@addOnSuccessListener
                 }
 
+                // =====================================
+                // SAVE NOTIFICATION
+                // =====================================
+
+                firestore
+                    .collection("users")
+                    .document(userId)
+                    .collection("notifications")
+                    .add(
+                        hashMapOf(
+                            "type" to "SOS",
+                            "title" to "SOS Activated",
+                            "description" to
+                                    "Emergency SOS was activated.",
+                            "time" to "Just now",
+                            "timestamp" to
+                                    com.google.firebase.firestore
+                                        .FieldValue
+                                        .serverTimestamp()
+                        )
+                    )
+
                 val names =
-                    uniqueContacts.values.toList()
+                    uniqueContacts
+                        .values
+                        .toList()
 
                 val phones =
-                    uniqueContacts.keys.toList()
+                    uniqueContacts
+                        .keys
+                        .toList()
 
                 val message =
                     StringBuilder()
@@ -495,7 +670,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 // =====================================
-                // SEND AUTOMATIC SMS
+                // SEND SMS
                 // =====================================
 
                 sendEmergencySMS(
@@ -504,18 +679,28 @@ class MainActivity : AppCompatActivity() {
                 )
 
                 // =====================================
-                // SHOW SOS DIALOG
+                // SHOW DIALOG
                 // =====================================
 
                 if (names.size == 1) {
 
-                    phoneToCall = phones[0]
+                    phoneToCall =
+                        phones[0]
 
                     AlertDialog.Builder(this)
-                        .setTitle("🚨 SOS Activated")
-                        .setMessage(message.toString())
-                        .setPositiveButton("📞 CALL") { _, _ ->
-                            makePhoneCall(phoneToCall)
+                        .setTitle(
+                            "🚨 SOS Activated"
+                        )
+                        .setMessage(
+                            message.toString()
+                        )
+                        .setPositiveButton(
+                            "📞 CALL"
+                        ) { _, _ ->
+
+                            makePhoneCall(
+                                phoneToCall
+                            )
                         }
                         .setNegativeButton(
                             "CANCEL",
@@ -542,6 +727,7 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
+
     // =====================================================
     // SEND EMERGENCY SMS
     // =====================================================
@@ -551,16 +737,11 @@ class MainActivity : AppCompatActivity() {
         phones: List<String>
     ) {
 
-        // Save contacts in case permission is needed
         pendingNames =
             ArrayList(names)
 
         pendingPhones =
             ArrayList(phones)
-
-        // =====================================
-        // CHECK SMS PERMISSION
-        // =====================================
 
         if (
             ContextCompat.checkSelfPermission(
@@ -579,10 +760,6 @@ class MainActivity : AppCompatActivity() {
 
             return
         }
-
-        // =====================================
-        // CHECK LOCATION PERMISSION
-        // =====================================
 
         if (
             ContextCompat.checkSelfPermission(
@@ -609,18 +786,29 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
+
     // =====================================================
     // GET LOCATION AND SEND SMS
     // =====================================================
 
-    @RequiresPermission(allOf = [Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION])
+    @RequiresPermission(
+        allOf = [
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        ]
+    )
     private fun getLocationAndSendSMS(
         names: List<String>,
         phones: List<String>
     ) {
 
-        fusedLocationClient.lastLocation
-            .addOnSuccessListener { location: Location? ->
+        fusedLocationClient
+            .lastLocation
+            .addOnSuccessListener {
+
+                    location: Location? ->
+
+                val smsMessage: String
 
                 if (location != null) {
 
@@ -633,7 +821,7 @@ class MainActivity : AppCompatActivity() {
                     val locationLink =
                         "https://maps.google.com/?q=$latitude,$longitude"
 
-                    val smsMessage =
+                    smsMessage =
                         "🚨 GUARDIAN AI EMERGENCY!\n\n" +
                                 "SOS has been activated.\n\n" +
                                 "I may need help. " +
@@ -641,25 +829,19 @@ class MainActivity : AppCompatActivity() {
                                 "📍 My Location:\n" +
                                 locationLink
 
-                    sendSMSToContacts(
-                        phones,
-                        smsMessage
-                    )
-
                 } else {
 
-                    // Location unavailable
-                    val smsMessage =
+                    smsMessage =
                         "🚨 GUARDIAN AI EMERGENCY!\n\n" +
                                 "SOS has been activated.\n\n" +
                                 "I may need help. " +
                                 "Please contact me immediately."
-
-                    sendSMSToContacts(
-                        phones,
-                        smsMessage
-                    )
                 }
+
+                sendSMSToContacts(
+                    phones,
+                    smsMessage
+                )
             }
             .addOnFailureListener {
 
@@ -675,6 +857,7 @@ class MainActivity : AppCompatActivity() {
                 )
             }
     }
+
 
     // =====================================================
     // SEND SMS TO ALL CONTACTS
@@ -717,6 +900,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
     // =====================================================
     // MULTIPLE CONTACTS
     // =====================================================
@@ -733,11 +917,18 @@ class MainActivity : AppCompatActivity() {
             }
 
         AlertDialog.Builder(this)
-            .setTitle("🚨 SOS Activated")
-            .setMessage(message)
-            .setItems(items) { _, which ->
+            .setTitle(
+                "🚨 SOS Activated"
+            )
+            .setMessage(
+                message
+            )
+            .setItems(
+                items
+            ) { _, which ->
 
-                phoneToCall = phones[which]
+                phoneToCall =
+                    phones[which]
 
                 showCallConfirmation(
                     names[which],
@@ -751,6 +942,7 @@ class MainActivity : AppCompatActivity() {
             .show()
     }
 
+
     // =====================================================
     // CALL CONFIRMATION
     // =====================================================
@@ -761,7 +953,9 @@ class MainActivity : AppCompatActivity() {
     ) {
 
         AlertDialog.Builder(this)
-            .setTitle("📞 Call Emergency Contact")
+            .setTitle(
+                "📞 Call Emergency Contact"
+            )
             .setMessage(
                 "Call $name?\n\n$phone"
             )
@@ -769,7 +963,9 @@ class MainActivity : AppCompatActivity() {
                 "CALL"
             ) { _, _ ->
 
-                makePhoneCall(phone)
+                makePhoneCall(
+                    phone
+                )
             }
             .setNegativeButton(
                 "CANCEL",
@@ -778,13 +974,17 @@ class MainActivity : AppCompatActivity() {
             .show()
     }
 
+
     // =====================================================
     // MAKE PHONE CALL
     // =====================================================
 
-    private fun makePhoneCall(phone: String) {
+    private fun makePhoneCall(
+        phone: String
+    ) {
 
-        phoneToCall = phone
+        phoneToCall =
+            phone
 
         if (
             ContextCompat.checkSelfPermission(
@@ -804,13 +1004,19 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-        val intent = Intent(
-            Intent.ACTION_CALL,
-            Uri.parse("tel:$phone")
-        )
+        val intent =
+            Intent(
+                Intent.ACTION_CALL,
+                Uri.parse(
+                    "tel:$phone"
+                )
+            )
 
-        startActivity(intent)
+        startActivity(
+            intent
+        )
     }
+
 
     // =====================================================
     // PERMISSION RESULT
@@ -821,30 +1027,6 @@ class MainActivity : AppCompatActivity() {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        if (requestCode == NOTIFICATION_PERMISSION_CODE) {
-
-            if (
-                grantResults.isNotEmpty() &&
-                grantResults[0] == PackageManager.PERMISSION_GRANTED
-            ) {
-
-                Toast.makeText(
-                    this,
-                    "Notification permission granted",
-                    Toast.LENGTH_SHORT
-                ).show()
-
-                showEmergencyNotification()
-
-            } else {
-
-                Toast.makeText(
-                    this,
-                    "Notification permission denied",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
 
         super.onRequestPermissionsResult(
             requestCode,
@@ -853,10 +1035,37 @@ class MainActivity : AppCompatActivity() {
         )
 
         // =====================================
+        // NOTIFICATION
+        // =====================================
+
+        if (
+            requestCode ==
+            NOTIFICATION_PERMISSION_CODE
+        ) {
+
+            if (
+                grantResults.isNotEmpty() &&
+                grantResults[0] ==
+                PackageManager.PERMISSION_GRANTED
+            ) {
+
+                Toast.makeText(
+                    this,
+                    "Notification permission granted",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+            }
+        }
+
+        // =====================================
         // LOCATION
         // =====================================
 
-        if (requestCode == LOCATION_PERMISSION_CODE) {
+        if (
+            requestCode ==
+            LOCATION_PERMISSION_CODE
+        ) {
 
             if (
                 grantResults.isNotEmpty() &&
@@ -870,14 +1079,16 @@ class MainActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
 
-                // If contacts are pending, send SMS
-                if (pendingPhones.isNotEmpty()) {
+                if (
+                    pendingPhones.isNotEmpty()
+                ) {
 
                     if (
                         ContextCompat.checkSelfPermission(
                             this,
                             Manifest.permission.SEND_SMS
-                        ) == PackageManager.PERMISSION_GRANTED
+                        ) ==
+                        PackageManager.PERMISSION_GRANTED
                     ) {
 
                         getLocationAndSendSMS(
@@ -915,7 +1126,10 @@ class MainActivity : AppCompatActivity() {
         // SMS
         // =====================================
 
-        if (requestCode == SMS_PERMISSION_CODE) {
+        if (
+            requestCode ==
+            SMS_PERMISSION_CODE
+        ) {
 
             if (
                 grantResults.isNotEmpty() &&
@@ -929,12 +1143,34 @@ class MainActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
 
-                if (pendingPhones.isNotEmpty()) {
+                if (
+                    pendingPhones.isNotEmpty()
+                ) {
 
-                    getLocationAndSendSMS(
-                        pendingNames,
-                        pendingPhones
-                    )
+                    if (
+                        ContextCompat.checkSelfPermission(
+                            this,
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                        ) ==
+                        PackageManager.PERMISSION_GRANTED
+                    ) {
+
+                        getLocationAndSendSMS(
+                            pendingNames,
+                            pendingPhones
+                        )
+
+                    } else {
+
+                        ActivityCompat.requestPermissions(
+                            this,
+                            arrayOf(
+                                Manifest.permission.ACCESS_FINE_LOCATION,
+                                Manifest.permission.ACCESS_COARSE_LOCATION
+                            ),
+                            LOCATION_PERMISSION_CODE
+                        )
+                    }
                 }
 
             } else {
@@ -951,7 +1187,10 @@ class MainActivity : AppCompatActivity() {
         // CALL
         // =====================================
 
-        if (requestCode == CALL_PERMISSION_CODE) {
+        if (
+            requestCode ==
+            CALL_PERMISSION_CODE
+        ) {
 
             if (
                 grantResults.isNotEmpty() &&
@@ -959,7 +1198,9 @@ class MainActivity : AppCompatActivity() {
                 PackageManager.PERMISSION_GRANTED
             ) {
 
-                makePhoneCall(phoneToCall)
+                makePhoneCall(
+                    phoneToCall
+                )
 
             } else {
 
