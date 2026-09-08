@@ -55,7 +55,12 @@ class MainActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_main)
+        setContentView(
+            R.layout.activity_main
+        )
+
+        // ================= FIREBASE =================
+
         auth =
             FirebaseAuth.getInstance()
 
@@ -63,10 +68,19 @@ class MainActivity : AppCompatActivity() {
             FirebaseFirestore.getInstance()
 
 
+        // ================= LOCATION =================
+
         fusedLocationClient =
-            LocationServices.getFusedLocationProviderClient(this)
+            LocationServices
+                .getFusedLocationProviderClient(this)
+
+
+        // ================= NOTIFICATION CHANNEL =================
 
         createNotificationChannel()
+
+
+        // ================= VIEWS =================
 
         val tvUserName =
             findViewById<TextView>(
@@ -88,6 +102,11 @@ class MainActivity : AppCompatActivity() {
                 R.id.cardSafetyCheck
             )
 
+        val cardHistory =
+            findViewById<MaterialCardView>(
+                R.id.cardHistory
+            )
+
         val ivNotification =
             findViewById<TextView>(
                 R.id.ivNotification
@@ -102,6 +121,9 @@ class MainActivity : AppCompatActivity() {
             findViewById<TextView>(
                 R.id.navProfile
             )
+
+
+        // ================= CHECK LOGIN =================
 
         val currentUser =
             auth.currentUser
@@ -120,6 +142,9 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
+
+        // ================= USER NAME =================
+
         val email =
             currentUser.email
 
@@ -134,16 +159,28 @@ class MainActivity : AppCompatActivity() {
                 "Welcome!"
         }
 
+
+        // ================= SOS =================
+
         cardSOS.setOnClickListener {
 
             showSOSConfirmation()
+
         }
 
+
+        // ================= LOCATION =================
+        // Location will now be shared with
+        // emergency contacts through SMS.
 
         cardLocation.setOnClickListener {
 
-            getCurrentLocation()
+            shareCurrentLocation()
+
         }
+
+
+        // ================= SAFETY CHECK =================
 
         cardSafetyCheck.setOnClickListener {
 
@@ -153,7 +190,25 @@ class MainActivity : AppCompatActivity() {
                     SafetyCheckActivity::class.java
                 )
             )
+
         }
+
+
+        // ================= EMERGENCY HISTORY =================
+
+        cardHistory.setOnClickListener {
+
+            startActivity(
+                Intent(
+                    this,
+                    EmergencyHistoryActivity::class.java
+                )
+            )
+
+        }
+
+
+        // ================= CONTACTS =================
 
         navContacts.setOnClickListener {
 
@@ -163,7 +218,11 @@ class MainActivity : AppCompatActivity() {
                     EmergencyContactsActivity::class.java
                 )
             )
+
         }
+
+
+        // ================= PROFILE =================
 
         navProfile.setOnClickListener {
 
@@ -173,7 +232,11 @@ class MainActivity : AppCompatActivity() {
                     ProfileActivity::class.java
                 )
             )
+
         }
+
+
+        // ================= NOTIFICATIONS =================
 
         ivNotification.setOnClickListener {
 
@@ -183,8 +246,15 @@ class MainActivity : AppCompatActivity() {
                     NotificationsActivity::class.java
                 )
             )
+
         }
     }
+
+
+    // =====================================================
+    // NOTIFICATION CHANNEL
+    // =====================================================
+
     private fun createNotificationChannel() {
 
         if (
@@ -212,6 +282,12 @@ class MainActivity : AppCompatActivity() {
             )
         }
     }
+
+
+    // =====================================================
+    // EMERGENCY NOTIFICATION
+    // =====================================================
+
     private fun showEmergencyNotification() {
 
         if (
@@ -223,7 +299,8 @@ class MainActivity : AppCompatActivity() {
                 ContextCompat.checkSelfPermission(
                     this,
                     Manifest.permission.POST_NOTIFICATIONS
-                ) != PackageManager.PERMISSION_GRANTED
+                ) !=
+                PackageManager.PERMISSION_GRANTED
             ) {
 
                 ActivityCompat.requestPermissions(
@@ -237,6 +314,7 @@ class MainActivity : AppCompatActivity() {
                 return
             }
         }
+
 
         val intent =
             Intent(
@@ -290,13 +368,20 @@ class MainActivity : AppCompatActivity() {
                 notification
             )
     }
-        private fun getCurrentLocation() {
+
+
+    // =====================================================
+    // GET CURRENT LOCATION
+    // =====================================================
+
+    private fun getCurrentLocation() {
 
         if (
             ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
+            ) !=
+            PackageManager.PERMISSION_GRANTED
         ) {
 
             ActivityCompat.requestPermissions(
@@ -310,6 +395,7 @@ class MainActivity : AppCompatActivity() {
 
             return
         }
+
 
         fusedLocationClient
             .lastLocation
@@ -349,6 +435,271 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
+
+    // =====================================================
+    // SHARE CURRENT LOCATION
+    // =====================================================
+
+    private fun shareCurrentLocation() {
+
+        val currentUser =
+            auth.currentUser
+
+        if (currentUser == null) {
+
+            Toast.makeText(
+                this,
+                "Please login first",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            return
+        }
+
+        val userId =
+            currentUser.uid
+
+
+        // First check SMS permission
+
+        if (
+            ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.SEND_SMS
+            ) !=
+            PackageManager.PERMISSION_GRANTED
+        ) {
+
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(
+                    Manifest.permission.SEND_SMS
+                ),
+                SMS_PERMISSION_CODE
+            )
+
+            return
+        }
+
+
+        // Then check location permission
+
+        if (
+            ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) !=
+            PackageManager.PERMISSION_GRANTED
+        ) {
+
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ),
+                LOCATION_PERMISSION_CODE
+            )
+
+            return
+        }
+
+
+        // Load emergency contacts
+
+        firestore
+            .collection("users")
+            .document(userId)
+            .collection("emergencyContacts")
+            .get()
+            .addOnSuccessListener { documents ->
+
+                if (documents.isEmpty) {
+
+                    Toast.makeText(
+                        this,
+                        "No emergency contacts saved",
+                        Toast.LENGTH_LONG
+                    ).show()
+
+                    return@addOnSuccessListener
+                }
+
+
+                val uniqueContacts =
+                    LinkedHashMap<String, String>()
+
+
+                for (document in documents) {
+
+                    val name =
+                        document.getString("name")
+                            ?: "Emergency Contact"
+
+                    val phone =
+                        document.getString("phone")
+                            ?: ""
+
+                    if (phone.isNotEmpty()) {
+
+                        uniqueContacts[
+                            phone
+                        ] = name
+                    }
+                }
+
+
+                if (uniqueContacts.isEmpty()) {
+
+                    Toast.makeText(
+                        this,
+                        "No valid phone numbers found",
+                        Toast.LENGTH_LONG
+                    ).show()
+
+                    return@addOnSuccessListener
+                }
+
+
+                pendingNames =
+                    ArrayList(
+                        uniqueContacts.values
+                    )
+
+                pendingPhones =
+                    ArrayList(
+                        uniqueContacts.keys
+                    )
+
+
+                getLocationAndShareToContacts(
+                    pendingNames,
+                    pendingPhones
+                )
+            }
+            .addOnFailureListener {
+
+                Toast.makeText(
+                    this,
+                    "Unable to load emergency contacts",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+    }
+
+
+    // =====================================================
+    // GET LOCATION AND SHARE TO CONTACTS
+    // =====================================================
+
+    @RequiresPermission(
+        allOf = [
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        ]
+    )
+    private fun getLocationAndShareToContacts(
+        names: List<String>,
+        phones: List<String>
+    ) {
+
+        fusedLocationClient
+            .lastLocation
+            .addOnSuccessListener {
+
+                    location: Location? ->
+
+
+                if (location == null) {
+
+                    Toast.makeText(
+                        this,
+                        "Unable to get current location",
+                        Toast.LENGTH_LONG
+                    ).show()
+
+                    return@addOnSuccessListener
+                }
+
+
+                val latitude =
+                    location.latitude
+
+                val longitude =
+                    location.longitude
+
+
+                val locationLink =
+                    "https://maps.google.com/?q=" +
+                            "$latitude,$longitude"
+
+
+                val smsMessage =
+                    "📍 GUARDIAN AI LOCATION UPDATE!\n\n" +
+                            "My current location is:\n\n" +
+                            "$locationLink\n\n" +
+                            "Please check my location if needed."
+
+
+                // Send SMS
+
+                sendSMSToContacts(
+                    phones,
+                    smsMessage
+                )
+
+
+                // =========================
+                // SAVE LOCATION HISTORY
+                // =========================
+
+                val currentUser =
+                    auth.currentUser
+
+                if (currentUser != null) {
+
+                    firestore
+                        .collection("users")
+                        .document(currentUser.uid)
+                        .collection("notifications")
+                        .add(
+                            hashMapOf(
+                                "type" to "LOCATION",
+                                "title" to "Location Shared",
+                                "description" to
+                                        "Current location was shared with emergency contacts.",
+                                "time" to "Just now",
+                                "timestamp" to
+                                        com.google.firebase.firestore
+                                            .FieldValue
+                                            .serverTimestamp()
+                            )
+                        )
+                }
+
+
+                // Show location dialog
+
+                showLocationDialog(
+                    latitude,
+                    longitude
+                )
+            }
+            .addOnFailureListener {
+
+                Toast.makeText(
+                    this,
+                    "Unable to get current location",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+    }
+
+
+    // =====================================================
+    // LOCATION DIALOG
+    // =====================================================
+
     private fun showLocationDialog(
         latitude: Double,
         longitude: Double
@@ -381,6 +732,11 @@ class MainActivity : AppCompatActivity() {
             )
             .show()
     }
+
+
+    // =====================================================
+    // OPEN GOOGLE MAPS
+    // =====================================================
 
     private fun openGoogleMaps(
         latitude: Double,
@@ -423,6 +779,12 @@ class MainActivity : AppCompatActivity() {
             )
         }
     }
+
+
+    // =====================================================
+    // SOS CONFIRMATION
+    // =====================================================
+
     private fun showSOSConfirmation() {
 
         AlertDialog.Builder(this)
@@ -446,6 +808,11 @@ class MainActivity : AppCompatActivity() {
             )
             .show()
     }
+
+
+    // =====================================================
+    // ACTIVATE SOS
+    // =====================================================
 
     private fun activateSOS() {
 
@@ -473,9 +840,7 @@ class MainActivity : AppCompatActivity() {
             .document(userId)
             .collection("emergencyContacts")
             .get()
-            .addOnSuccessListener {
-
-                    documents ->
+            .addOnSuccessListener { documents ->
 
                 if (documents.isEmpty) {
 
@@ -495,8 +860,10 @@ class MainActivity : AppCompatActivity() {
                     return@addOnSuccessListener
                 }
 
+
                 val uniqueContacts =
                     LinkedHashMap<String, String>()
+
 
                 for (document in documents) {
 
@@ -518,6 +885,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
 
+
                 if (uniqueContacts.isEmpty()) {
 
                     Toast.makeText(
@@ -528,6 +896,11 @@ class MainActivity : AppCompatActivity() {
 
                     return@addOnSuccessListener
                 }
+
+
+                // =========================
+                // SAVE SOS HISTORY
+                // =========================
 
                 firestore
                     .collection("users")
@@ -547,6 +920,7 @@ class MainActivity : AppCompatActivity() {
                         )
                     )
 
+
                 val names =
                     uniqueContacts
                         .values
@@ -557,8 +931,10 @@ class MainActivity : AppCompatActivity() {
                         .keys
                         .toList()
 
+
                 val message =
                     StringBuilder()
+
 
                 message.append(
                     "🚨 SOS is activated!\n\n"
@@ -567,6 +943,7 @@ class MainActivity : AppCompatActivity() {
                 message.append(
                     "Emergency Contacts:\n\n"
                 )
+
 
                 for (i in names.indices) {
 
@@ -579,10 +956,12 @@ class MainActivity : AppCompatActivity() {
                     )
                 }
 
+
                 sendEmergencySMS(
                     names,
                     phones
                 )
+
 
                 if (names.size == 1) {
 
@@ -629,6 +1008,11 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
+
+    // =====================================================
+    // SEND EMERGENCY SMS
+    // =====================================================
+
     private fun sendEmergencySMS(
         names: List<String>,
         phones: List<String>
@@ -640,11 +1024,13 @@ class MainActivity : AppCompatActivity() {
         pendingPhones =
             ArrayList(phones)
 
+
         if (
             ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.SEND_SMS
-            ) != PackageManager.PERMISSION_GRANTED
+            ) !=
+            PackageManager.PERMISSION_GRANTED
         ) {
 
             ActivityCompat.requestPermissions(
@@ -658,11 +1044,13 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
+
         if (
             ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
+            ) !=
+            PackageManager.PERMISSION_GRANTED
         ) {
 
             ActivityCompat.requestPermissions(
@@ -677,11 +1065,17 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
+
         getLocationAndSendSMS(
             names,
             phones
         )
     }
+
+
+    // =====================================================
+    // GET LOCATION AND SEND SOS SMS
+    // =====================================================
 
     @RequiresPermission(
         allOf = [
@@ -730,6 +1124,7 @@ class MainActivity : AppCompatActivity() {
                                 "Please contact me immediately."
                 }
 
+
                 sendSMSToContacts(
                     phones,
                     smsMessage
@@ -743,13 +1138,20 @@ class MainActivity : AppCompatActivity() {
                             "I may need help. " +
                             "Please contact me immediately."
 
+
                 sendSMSToContacts(
                     phones,
                     smsMessage
                 )
             }
     }
-        private fun sendSMSToContacts(
+
+
+    // =====================================================
+    // SEND SMS TO CONTACTS
+    // =====================================================
+
+    private fun sendSMSToContacts(
         phones: List<String>,
         message: String
     ) {
@@ -758,6 +1160,7 @@ class MainActivity : AppCompatActivity() {
 
             val smsManager =
                 SmsManager.getDefault()
+
 
             for (phone in phones) {
 
@@ -769,6 +1172,7 @@ class MainActivity : AppCompatActivity() {
                     null
                 )
             }
+
 
             Toast.makeText(
                 this,
@@ -786,6 +1190,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
+    // =====================================================
+    // MULTIPLE CONTACTS
+    // =====================================================
+
     private fun showMultipleContacts(
         names: List<String>,
         phones: List<String>,
@@ -794,8 +1203,10 @@ class MainActivity : AppCompatActivity() {
 
         val items =
             Array(names.size) { index ->
+
                 "${names[index]} - ${phones[index]}"
             }
+
 
         AlertDialog.Builder(this)
             .setTitle(
@@ -823,6 +1234,11 @@ class MainActivity : AppCompatActivity() {
             .show()
     }
 
+
+    // =====================================================
+    // CALL CONFIRMATION
+    // =====================================================
+
     private fun showCallConfirmation(
         name: String,
         phone: String
@@ -849,6 +1265,12 @@ class MainActivity : AppCompatActivity() {
             )
             .show()
     }
+
+
+    // =====================================================
+    // MAKE PHONE CALL
+    // =====================================================
+
     private fun makePhoneCall(
         phone: String
     ) {
@@ -856,11 +1278,13 @@ class MainActivity : AppCompatActivity() {
         phoneToCall =
             phone
 
+
         if (
             ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.CALL_PHONE
-            ) != PackageManager.PERMISSION_GRANTED
+            ) !=
+            PackageManager.PERMISSION_GRANTED
         ) {
 
             ActivityCompat.requestPermissions(
@@ -874,6 +1298,7 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
+
         val intent =
             Intent(
                 Intent.ACTION_CALL,
@@ -882,10 +1307,16 @@ class MainActivity : AppCompatActivity() {
                 )
             )
 
+
         startActivity(
             intent
         )
     }
+
+
+    // =====================================================
+    // PERMISSION RESULT
+    // =====================================================
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -898,6 +1329,11 @@ class MainActivity : AppCompatActivity() {
             permissions,
             grantResults
         )
+
+
+        // =========================
+        // NOTIFICATION PERMISSION
+        // =========================
 
         if (
             requestCode ==
@@ -915,9 +1351,13 @@ class MainActivity : AppCompatActivity() {
                     "Notification permission granted",
                     Toast.LENGTH_SHORT
                 ).show()
-
             }
         }
+
+
+        // =========================
+        // LOCATION PERMISSION
+        // =========================
 
         if (
             requestCode ==
@@ -936,6 +1376,8 @@ class MainActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
 
+
+                // If Location Sharing was waiting
                 if (
                     pendingPhones.isNotEmpty()
                 ) {
@@ -948,7 +1390,7 @@ class MainActivity : AppCompatActivity() {
                         PackageManager.PERMISSION_GRANTED
                     ) {
 
-                        getLocationAndSendSMS(
+                        getLocationAndShareToContacts(
                             pendingNames,
                             pendingPhones
                         )
@@ -979,6 +1421,11 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+
+        // =========================
+        // SMS PERMISSION
+        // =========================
+
         if (
             requestCode ==
             SMS_PERMISSION_CODE
@@ -996,6 +1443,7 @@ class MainActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
 
+
                 if (
                     pendingPhones.isNotEmpty()
                 ) {
@@ -1008,7 +1456,11 @@ class MainActivity : AppCompatActivity() {
                         PackageManager.PERMISSION_GRANTED
                     ) {
 
-                        getLocationAndSendSMS(
+                        // IMPORTANT:
+                        // If pending request is Location sharing,
+                        // this will share current location.
+
+                        getLocationAndShareToContacts(
                             pendingNames,
                             pendingPhones
                         )
@@ -1035,6 +1487,11 @@ class MainActivity : AppCompatActivity() {
                 ).show()
             }
         }
+
+
+        // =========================
+        // CALL PERMISSION
+        // =========================
 
         if (
             requestCode ==

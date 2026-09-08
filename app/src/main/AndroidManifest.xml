@@ -58,6 +58,9 @@
         <activity
             android:name=".SafetyCheckActivity"
             android:exported="false" />
+        <activity
+            android:name=".EmergencyHistoryActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
