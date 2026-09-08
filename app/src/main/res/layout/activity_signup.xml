@@ -8,7 +8,6 @@
     android:background="@drawable/login_background"
     android:padding="20dp">
 
-    <!-- Top Shield -->
     <ImageView
         android:id="@+id/ivShield"
         android:layout_width="75dp"
@@ -20,7 +19,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- App Name -->
     <TextView
         android:id="@+id/tvAppName"
         android:layout_width="wrap_content"
@@ -34,7 +32,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ivShield" />
 
-    <!-- Tagline -->
     <TextView
         android:id="@+id/tvTagline"
         android:layout_width="wrap_content"
@@ -47,7 +44,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvAppName" />
 
-    <!-- Main Card -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardSignup"
         android:layout_width="0dp"
@@ -69,7 +65,6 @@
             android:layout_height="match_parent"
             android:padding="22dp">
 
-            <!-- Title -->
             <TextView
                 android:id="@+id/tvTitle"
                 android:layout_width="wrap_content"
@@ -81,8 +76,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <!-- Subtitle -->
             <TextView
                 android:id="@+id/tvSubtitle"
                 android:layout_width="wrap_content"
@@ -95,7 +88,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
-            <!-- Name -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilName"
                 android:layout_width="0dp"
@@ -122,7 +114,6 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Email -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilEmail"
                 android:layout_width="0dp"
@@ -149,7 +140,6 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Password -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilPassword"
                 android:layout_width="0dp"
@@ -177,7 +167,6 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Confirm Password -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilConfirmPassword"
                 android:layout_width="0dp"
@@ -205,7 +194,6 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Create Account Button -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSignup"
                 android:layout_width="0dp"
@@ -222,7 +210,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tilConfirmPassword" />
 
-            <!-- Login Link -->
             <TextView
                 android:id="@+id/tvLogin"
                 android:layout_width="wrap_content"
@@ -238,7 +225,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/btnSignup" />
 
-            <!-- Security Message -->
             <TextView
                 android:id="@+id/tvSecure"
                 android:layout_width="wrap_content"

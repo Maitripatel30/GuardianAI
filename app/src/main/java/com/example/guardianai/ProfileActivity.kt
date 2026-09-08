@@ -25,16 +25,8 @@ class ProfileActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_profile)
 
-        // =====================================
-        // FIREBASE
-        // =====================================
-
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
-
-        // =====================================
-        // FIND VIEWS
-        // =====================================
 
         val tvBack =
             findViewById<TextView>(R.id.tvBack)
@@ -54,10 +46,6 @@ class ProfileActivity : AppCompatActivity() {
         val btnLogout =
             findViewById<MaterialButton>(R.id.btnLogout)
 
-        // =====================================
-        // CHECK LOGIN
-        // =====================================
-
         val currentUser = auth.currentUser
 
         if (currentUser == null) {
@@ -72,41 +60,21 @@ class ProfileActivity : AppCompatActivity() {
             finish()
             return
         }
-
-        // =====================================
-        // SHOW EMAIL
-        // =====================================
-
         val email = currentUser.email
 
         tvEmail.text =
             email ?: "No email available"
 
-        // =====================================
-        // LOAD PROFILE
-        // =====================================
 
         loadProfile(currentUser.uid)
-
-        // =====================================
-        // LOAD CONTACT COUNT
-        // =====================================
 
         loadContactCount(
             currentUser.uid
         )
 
-        // =====================================
-        // BACK
-        // =====================================
-
         tvBack.setOnClickListener {
             finish()
         }
-
-        // =====================================
-        // EDIT PROFILE
-        // =====================================
 
         btnEditProfile.setOnClickListener {
 
@@ -115,20 +83,11 @@ class ProfileActivity : AppCompatActivity() {
             )
         }
 
-        // =====================================
-        // LOGOUT
-        // =====================================
-
         btnLogout.setOnClickListener {
 
             showLogoutConfirmation()
         }
     }
-
-
-    // =====================================================
-    // LOAD PROFILE
-    // =====================================================
 
     private fun loadProfile(userId: String) {
 
@@ -163,11 +122,6 @@ class ProfileActivity : AppCompatActivity() {
             }
     }
 
-
-    // =====================================================
-    // LOAD NAME FROM EMAIL
-    // =====================================================
-
     private fun loadNameFromEmail() {
 
         val email =
@@ -189,11 +143,6 @@ class ProfileActivity : AppCompatActivity() {
                 "Guardian User"
         }
     }
-
-
-    // =====================================================
-    // EDIT PROFILE DIALOG
-    // =====================================================
 
     private fun showEditProfileDialog(
         userId: String
@@ -261,10 +210,6 @@ class ProfileActivity : AppCompatActivity() {
     }
 
 
-    // =====================================================
-    // SAVE PROFILE
-    // =====================================================
-
     private fun saveProfile(
         userId: String,
         name: String
@@ -306,11 +251,6 @@ class ProfileActivity : AppCompatActivity() {
             }
     }
 
-
-    // =====================================================
-    // LOAD CONTACT COUNT
-    // =====================================================
-
     private fun loadContactCount(
         userId: String
     ) {
@@ -330,12 +270,6 @@ class ProfileActivity : AppCompatActivity() {
                 tvContactsCount.text = "0"
             }
     }
-
-
-    // =====================================================
-    // LOGOUT CONFIRMATION
-    // =====================================================
-
     private fun showLogoutConfirmation() {
 
         AlertDialog.Builder(this)

@@ -7,8 +7,6 @@
     android:layout_height="match_parent"
     android:background="#F6F7FF">
 
-    <!-- ================= TOP BACKGROUND ================= -->
-
     <View
         android:id="@+id/topBackground"
         android:layout_width="0dp"
@@ -18,7 +16,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- ================= APP NAME ================= -->
 
     <TextView
         android:id="@+id/tvAppName"
@@ -33,7 +30,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- ================= NOTIFICATION ================= -->
 
     <TextView
         android:id="@+id/ivNotification"
@@ -50,8 +46,6 @@
         android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <!-- ================= GREETING ================= -->
 
     <TextView
         android:id="@+id/tvGreeting"
@@ -77,8 +71,6 @@
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvGreeting" />
-
-    <!-- ================= PROTECTION CARD ================= -->
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardProtection"
@@ -151,7 +143,6 @@
 
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- ================= QUICK ACTIONS ================= -->
 
     <TextView
         android:id="@+id/tvQuickActions"
@@ -166,7 +157,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cardProtection" />
 
-    <!-- ================= SOS CARD ================= -->
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardSOS"
@@ -228,8 +218,6 @@
 
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- ================= LOCATION CARD ================= -->
-
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardLocation"
         android:layout_width="0dp"
@@ -289,8 +277,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
-
-    <!-- ================= SAFETY CHECK CARD ================= -->
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardSafetyCheck"
@@ -368,8 +354,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
-
-    <!-- ================= BOTTOM NAVIGATION ================= -->
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/bottomNav"

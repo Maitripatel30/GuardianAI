@@ -17,44 +17,30 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_login)
-
-        // Firebase Authentication
         auth = FirebaseAuth.getInstance()
 
-        // Email and Password fields
         val etEmail = findViewById<TextInputEditText>(R.id.etEmail)
         val etPassword = findViewById<TextInputEditText>(R.id.etPassword)
-
-        // Login button
         val btnLogin = findViewById<MaterialButton>(R.id.btnLogin)
-
-        // Sign Up text
         val tvSignup = findViewById<TextView>(R.id.tvSignup)
-
-        // =========================
-        // LOGIN BUTTON
-        // =========================
 
         btnLogin.setOnClickListener {
 
             val email = etEmail.text.toString().trim()
             val password = etPassword.text.toString().trim()
 
-            // Email validation
             if (email.isEmpty()) {
                 etEmail.error = "Please enter your email"
                 etEmail.requestFocus()
                 return@setOnClickListener
             }
 
-            // Password validation
             if (password.isEmpty()) {
                 etPassword.error = "Please enter your password"
                 etPassword.requestFocus()
                 return@setOnClickListener
             }
 
-            // Password length validation
             if (password.length < 6) {
                 etPassword.error =
                     "Password must be at least 6 characters"
@@ -62,11 +48,9 @@ class LoginActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Disable button while login is processing
             btnLogin.isEnabled = false
             btnLogin.text = "LOGGING IN..."
 
-            // Firebase Login
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
 
@@ -78,7 +62,6 @@ class LoginActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
 
-                        // Open MainActivity
                         val intent = Intent(
                             this,
                             MainActivity::class.java
@@ -86,12 +69,10 @@ class LoginActivity : AppCompatActivity() {
 
                         startActivity(intent)
 
-                        // Don't return to Login screen
                         finish()
 
                     } else {
 
-                        // Enable button again
                         btnLogin.isEnabled = true
                         btnLogin.text = "LOGIN   →"
 
@@ -106,11 +87,6 @@ class LoginActivity : AppCompatActivity() {
                     }
                 }
         }
-
-        // =========================
-        // SIGN UP
-        // =========================
-
         tvSignup.setOnClickListener {
 
             val intent = Intent(

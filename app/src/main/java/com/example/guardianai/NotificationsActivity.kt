@@ -14,47 +14,22 @@ class NotificationsActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
-
-    // =====================================
-    // NOTIFICATION CARDS
-    // =====================================
-
     private lateinit var cardSOS: MaterialCardView
     private lateinit var cardLocation: MaterialCardView
     private lateinit var cardCall: MaterialCardView
     private lateinit var cardSafety: MaterialCardView
-
-    // =====================================
-    // SOS VIEWS
-    // =====================================
-
     private lateinit var tvSOSTitle: TextView
     private lateinit var tvSOSDescription: TextView
     private lateinit var tvSOSTime: TextView
     private lateinit var tvSOSIcon: TextView
-
-    // =====================================
-    // LOCATION VIEWS
-    // =====================================
-
     private lateinit var tvLocationTitle: TextView
     private lateinit var tvLocationDescription: TextView
     private lateinit var tvLocationTime: TextView
     private lateinit var tvLocationIcon: TextView
-
-    // =====================================
-    // CALL VIEWS
-    // =====================================
-
     private lateinit var tvCallTitle: TextView
     private lateinit var tvCallDescription: TextView
     private lateinit var tvCallTime: TextView
     private lateinit var tvCallIcon: TextView
-
-    // =====================================
-    // SAFETY CHECK VIEWS
-    // =====================================
-
     private lateinit var tvSafetyTitle: TextView
     private lateinit var tvSafetyDescription: TextView
     private lateinit var tvSafetyTime: TextView
@@ -65,25 +40,11 @@ class NotificationsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_notifications)
-
-        // =====================================
-        // FIREBASE
-        // =====================================
-
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
 
-        // =====================================
-        // FIND BACK BUTTON
-        // =====================================
-
         val tvBack =
             findViewById<TextView>(R.id.tvBack)
-
-        // =====================================
-        // SOS
-        // =====================================
-
         cardSOS =
             findViewById(R.id.cardSOSNotification)
 
@@ -98,11 +59,6 @@ class NotificationsActivity : AppCompatActivity() {
 
         tvSOSIcon =
             findViewById(R.id.tvSOSIcon)
-
-        // =====================================
-        // LOCATION
-        // =====================================
-
         cardLocation =
             findViewById(R.id.cardLocationNotification)
 
@@ -117,10 +73,6 @@ class NotificationsActivity : AppCompatActivity() {
 
         tvLocationIcon =
             findViewById(R.id.tvLocationIcon)
-
-        // =====================================
-        // CALL
-        // =====================================
 
         cardCall =
             findViewById(R.id.cardCallNotification)
@@ -137,10 +89,6 @@ class NotificationsActivity : AppCompatActivity() {
         tvCallIcon =
             findViewById(R.id.tvCallIcon)
 
-        // =====================================
-        // SAFETY CHECK
-        // =====================================
-
         cardSafety =
             findViewById(R.id.cardSafetyNotification)
 
@@ -155,35 +103,17 @@ class NotificationsActivity : AppCompatActivity() {
 
         tvSafetyIcon =
             findViewById(R.id.tvSafetyIcon)
-
-        // =====================================
-        // BACK BUTTON
-        // =====================================
-
         tvBack.setOnClickListener {
             finish()
         }
-
-        // =====================================
-        // HIDE ALL CARDS INITIALLY
-        // =====================================
 
         cardSOS.visibility = View.GONE
         cardLocation.visibility = View.GONE
         cardCall.visibility = View.GONE
         cardSafety.visibility = View.GONE
 
-        // =====================================
-        // LOAD NOTIFICATIONS
-        // =====================================
-
         loadNotifications()
     }
-
-
-    // =====================================================
-    // LOAD NOTIFICATIONS FROM FIRESTORE
-    // =====================================================
 
     private fun loadNotifications() {
 
@@ -213,10 +143,6 @@ class NotificationsActivity : AppCompatActivity() {
             .get()
             .addOnSuccessListener { documents ->
 
-                // =====================================
-                // NO NOTIFICATIONS
-                // =====================================
-
                 if (documents.isEmpty()) {
 
                     Toast.makeText(
@@ -227,11 +153,6 @@ class NotificationsActivity : AppCompatActivity() {
 
                     return@addOnSuccessListener
                 }
-
-                // =====================================
-                // LATEST NOTIFICATION OF EACH TYPE
-                // =====================================
-
                 var sosShown = false
                 var locationShown = false
                 var callShown = false
@@ -256,10 +177,6 @@ class NotificationsActivity : AppCompatActivity() {
                         document.getString("time")
                             ?: "Recent"
 
-                    // =====================================
-                    // SOS
-                    // =====================================
-
                     if (
                         type == "SOS" &&
                         !sosShown
@@ -274,10 +191,6 @@ class NotificationsActivity : AppCompatActivity() {
                         sosShown = true
                     }
 
-                    // =====================================
-                    // LOCATION
-                    // =====================================
-
                     else if (
                         type == "LOCATION" &&
                         !locationShown
@@ -291,11 +204,6 @@ class NotificationsActivity : AppCompatActivity() {
 
                         locationShown = true
                     }
-
-                    // =====================================
-                    // CALL
-                    // =====================================
-
                     else if (
                         type == "CALL" &&
                         !callShown
@@ -310,10 +218,6 @@ class NotificationsActivity : AppCompatActivity() {
                         callShown = true
                     }
 
-                    // =====================================
-                    // SAFETY CHECK
-                    // =====================================
-
                     else if (
                         type == "SAFETY_CHECK" &&
                         !safetyShown
@@ -327,10 +231,6 @@ class NotificationsActivity : AppCompatActivity() {
 
                         safetyShown = true
                     }
-
-                    // =====================================
-                    // STOP AFTER ALL 4 FOUND
-                    // =====================================
 
                     if (
                         sosShown &&
@@ -351,12 +251,6 @@ class NotificationsActivity : AppCompatActivity() {
                 ).show()
             }
     }
-
-
-    // =====================================================
-    // SHOW SOS NOTIFICATION
-    // =====================================================
-
     private fun showSOSNotification(
         title: String,
         description: String,
@@ -374,11 +268,6 @@ class NotificationsActivity : AppCompatActivity() {
         tvSOSTime.text = time
     }
 
-
-    // =====================================================
-    // SHOW LOCATION NOTIFICATION
-    // =====================================================
-
     private fun showLocationNotification(
         title: String,
         description: String,
@@ -395,12 +284,6 @@ class NotificationsActivity : AppCompatActivity() {
 
         tvLocationTime.text = time
     }
-
-
-    // =====================================================
-    // SHOW CALL NOTIFICATION
-    // =====================================================
-
     private fun showCallNotification(
         title: String,
         description: String,
@@ -417,12 +300,6 @@ class NotificationsActivity : AppCompatActivity() {
 
         tvCallTime.text = time
     }
-
-
-    // =====================================================
-    // SHOW SAFETY CHECK NOTIFICATION
-    // =====================================================
-
     private fun showSafetyNotification(
         title: String,
         description: String,

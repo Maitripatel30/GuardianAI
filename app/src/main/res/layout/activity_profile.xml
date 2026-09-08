@@ -7,8 +7,6 @@
     android:layout_height="match_parent"
     android:background="#F5F7FF">
 
-    <!-- ================= HEADER ================= -->
-
     <View
         android:id="@+id/headerBackground"
         android:layout_width="0dp"
@@ -17,9 +15,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <!-- Back Button -->
-
     <TextView
         android:id="@+id/tvBack"
         android:layout_width="45dp"
@@ -37,7 +32,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Title -->
 
     <TextView
         android:id="@+id/tvTitle"
@@ -52,7 +46,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Profile Avatar -->
 
     <TextView
         android:id="@+id/tvProfileIcon"
@@ -67,7 +60,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- User Name -->
 
     <TextView
         android:id="@+id/tvProfileName"
@@ -82,8 +74,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvProfileIcon" />
 
-    <!-- Protection Status -->
-
     <TextView
         android:id="@+id/tvProtectionStatus"
         android:layout_width="wrap_content"
@@ -95,8 +85,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvProfileName" />
-
-    <!-- ================= ACCOUNT CARD ================= -->
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardAccount"
@@ -119,7 +107,6 @@
             android:layout_height="match_parent"
             android:padding="18dp">
 
-            <!-- Account Title -->
 
             <TextView
                 android:id="@+id/tvAccountTitle"
@@ -132,8 +119,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <!-- Email Label -->
-
             <TextView
                 android:id="@+id/tvEmailLabel"
                 android:layout_width="wrap_content"
@@ -144,8 +129,6 @@
                 android:textSize="12sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvAccountTitle" />
-
-            <!-- Email -->
 
             <TextView
                 android:id="@+id/tvEmail"
@@ -166,9 +149,6 @@
 
     </com.google.android.material.card.MaterialCardView>
 
-
-    <!-- ================= EDIT PROFILE BUTTON ================= -->
-
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnEditProfile"
         android:layout_width="0dp"
@@ -187,9 +167,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cardAccount" />
-
-
-    <!-- ================= SAFETY CARD ================= -->
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardSafety"
@@ -212,8 +189,6 @@
             android:layout_height="match_parent"
             android:padding="18dp">
 
-            <!-- Safety Title -->
-
             <TextView
                 android:id="@+id/tvSafetyTitle"
                 android:layout_width="wrap_content"
@@ -224,8 +199,6 @@
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <!-- Protection -->
 
             <TextView
                 android:id="@+id/tvProtectionLabel"
@@ -249,8 +222,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/tvProtectionLabel" />
 
-            <!-- Emergency Contacts -->
-
             <TextView
                 android:id="@+id/tvContactsLabel"
                 android:layout_width="wrap_content"
@@ -272,8 +243,6 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/tvContactsLabel" />
-
-            <!-- SOS -->
 
             <TextView
                 android:id="@+id/tvSOSLabel"
@@ -301,9 +270,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
-
-
-    <!-- ================= LOGOUT ================= -->
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnLogout"

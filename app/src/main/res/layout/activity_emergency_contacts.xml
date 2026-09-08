@@ -7,10 +7,6 @@
     android:layout_height="match_parent"
     android:background="#F5F7FF">
 
-    <!-- ============================= -->
-    <!-- HEADER -->
-    <!-- ============================= -->
-
     <View
         android:id="@+id/headerBackground"
         android:layout_width="0dp"
@@ -19,8 +15,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <!-- Back Button -->
 
     <TextView
         android:id="@+id/tvBack"
@@ -39,8 +33,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Title -->
-
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
@@ -53,9 +45,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <!-- Subtitle -->
-
     <TextView
         android:id="@+id/tvSubtitle"
         android:layout_width="wrap_content"
@@ -67,11 +56,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvTitle" />
-
-
-    <!-- ============================= -->
-    <!-- INFORMATION CARD -->
-    <!-- ============================= -->
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardInfo"
@@ -93,9 +77,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="15dp">
-
-            <!-- Shield -->
-
             <TextView
                 android:id="@+id/tvInfoIcon"
                 android:layout_width="50dp"
@@ -106,8 +87,6 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <!-- Information Title -->
 
             <TextView
                 android:id="@+id/tvInfoTitle"
@@ -121,8 +100,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/tvInfoIcon"
                 app:layout_constraintTop_toTopOf="@id/tvInfoIcon" />
-
-            <!-- Information Description -->
 
             <TextView
                 android:id="@+id/tvInfoDescription"
@@ -140,12 +117,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
-
-
-    <!-- ============================= -->
-    <!-- ADD CONTACT BUTTON -->
-    <!-- ============================= -->
-
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnAddContact"
         android:layout_width="0dp"
@@ -164,12 +135,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cardInfo" />
-
-
-    <!-- ============================= -->
-    <!-- EMPTY CONTACTS CARD -->
-    <!-- ============================= -->
-
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardEmpty"
         android:layout_width="0dp"
@@ -189,9 +154,6 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-            <!-- Empty Icon -->
-
             <TextView
                 android:id="@+id/tvEmptyIcon"
                 android:layout_width="60dp"
@@ -202,9 +164,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <!-- Empty Title -->
-
             <TextView
                 android:id="@+id/tvEmptyTitle"
                 android:layout_width="wrap_content"
@@ -217,8 +176,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvEmptyIcon" />
-
-            <!-- Empty Description -->
 
             <TextView
                 android:id="@+id/tvEmptyDescription"
@@ -235,11 +192,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
-
-
-    <!-- ============================= -->
-    <!-- SAVED CONTACTS CONTAINER -->
-    <!-- ============================= -->
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/contactsContainer"

@@ -29,18 +29,8 @@ class SafetyCheckActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_safety_check)
-
-        // =====================================
-        // FIREBASE
-        // =====================================
-
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
-
-        // =====================================
-        // FIND VIEWS
-        // =====================================
-
         val tvBack =
             findViewById<TextView>(R.id.tvBack)
 
@@ -59,10 +49,6 @@ class SafetyCheckActivity : AppCompatActivity() {
         btnCancel =
             findViewById(R.id.btnCancelTimer)
 
-        // =====================================
-        // INITIAL STATE
-        // =====================================
-
         tvTimer.text = "00:00"
 
         tvStatus.text =
@@ -71,10 +57,6 @@ class SafetyCheckActivity : AppCompatActivity() {
         btnSafe.isEnabled = false
 
         btnCancel.isEnabled = false
-
-        // =====================================
-        // BACK BUTTON
-        // =====================================
 
         tvBack.setOnClickListener {
 
@@ -101,38 +83,20 @@ class SafetyCheckActivity : AppCompatActivity() {
             }
         }
 
-        // =====================================
-        // START TIMER
-        // =====================================
-
         btnStart.setOnClickListener {
 
             showTimerSelection()
         }
-
-        // =====================================
-        // I'M SAFE
-        // =====================================
-
         btnSafe.setOnClickListener {
 
             markAsSafe()
         }
-
-        // =====================================
-        // CANCEL TIMER
-        // =====================================
 
         btnCancel.setOnClickListener {
 
             cancelTimer()
         }
     }
-
-
-    // =====================================================
-    // TIMER SELECTION
-    // =====================================================
 
     private fun showTimerSelection() {
 
@@ -169,12 +133,6 @@ class SafetyCheckActivity : AppCompatActivity() {
             )
             .show()
     }
-
-
-    // =====================================================
-    // START SAFETY TIMER
-    // =====================================================
-
     private fun startSafetyTimer(minutes: Int) {
 
         // Cancel previous timer
@@ -219,10 +177,6 @@ class SafetyCheckActivity : AppCompatActivity() {
                         )
                 }
 
-                // =====================================
-                // TIMER EXPIRED
-                // =====================================
-
                 override fun onFinish() {
 
                     timerRunning = false
@@ -245,12 +199,6 @@ class SafetyCheckActivity : AppCompatActivity() {
 
             }.start()
     }
-
-
-    // =====================================================
-    // I'M SAFE
-    // =====================================================
-
     private fun markAsSafe() {
 
         countDownTimer?.cancel()
@@ -276,11 +224,6 @@ class SafetyCheckActivity : AppCompatActivity() {
         ).show()
     }
 
-
-    // =====================================================
-    // CANCEL TIMER
-    // =====================================================
-
     private fun cancelTimer() {
 
         countDownTimer?.cancel()
@@ -302,12 +245,6 @@ class SafetyCheckActivity : AppCompatActivity() {
             Toast.LENGTH_SHORT
         ).show()
     }
-
-
-    // =====================================================
-    // SAVE SAFETY COMPLETED NOTIFICATION
-    // =====================================================
-
     private fun saveSafetyCompletedNotification() {
 
         val currentUser = auth.currentUser
@@ -334,12 +271,6 @@ class SafetyCheckActivity : AppCompatActivity() {
             .collection("notifications")
             .add(notification)
     }
-
-
-    // =====================================================
-    // SAVE SAFETY MISSED NOTIFICATION
-    // =====================================================
-
     private fun saveSafetyMissedNotification() {
 
         val currentUser = auth.currentUser
@@ -374,12 +305,6 @@ class SafetyCheckActivity : AppCompatActivity() {
                 ).show()
             }
     }
-
-
-    // =====================================================
-    // SAFETY MISSED DIALOG
-    // =====================================================
-
     private fun showSafetyMissedDialog() {
 
         AlertDialog.Builder(this)
@@ -416,10 +341,6 @@ class SafetyCheckActivity : AppCompatActivity() {
             .show()
     }
 
-
-    // =====================================================
-    // ACTIVITY DESTROY
-    // =====================================================
 
     override fun onDestroy() {
 

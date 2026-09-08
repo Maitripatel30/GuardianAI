@@ -7,9 +7,6 @@
     android:layout_height="match_parent"
     android:background="#F5F7FF">
 
-    <!-- =====================================
-         HEADER
-         ===================================== -->
 
     <View
         android:id="@+id/headerBackground"
@@ -19,8 +16,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <!-- Back Button -->
 
     <TextView
         android:id="@+id/tvBack"
@@ -38,9 +33,6 @@
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <!-- Title -->
-
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
@@ -54,7 +46,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Subtitle -->
 
     <TextView
         android:id="@+id/tvSubtitle"
@@ -67,11 +58,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvTitle" />
-
-
-    <!-- =====================================
-         SCROLL AREA
-         ===================================== -->
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/notificationScroll"
@@ -88,11 +74,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="20dp">
-
-            <!-- =====================================
-                 SOS CARD
-                 ===================================== -->
-
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardSOSNotification"
                 android:layout_width="0dp"
@@ -165,12 +146,6 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </com.google.android.material.card.MaterialCardView>
-
-
-            <!-- =====================================
-                 LOCATION CARD
-                 ===================================== -->
-
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardLocationNotification"
                 android:layout_width="0dp"
@@ -244,11 +219,6 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-
-            <!-- =====================================
-                 CALL CARD
-                 ===================================== -->
-
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardCallNotification"
                 android:layout_width="0dp"
@@ -321,11 +291,6 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </com.google.android.material.card.MaterialCardView>
-
-
-            <!-- =====================================
-                 SAFETY CHECK CARD
-                 ===================================== -->
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardSafetyNotification"

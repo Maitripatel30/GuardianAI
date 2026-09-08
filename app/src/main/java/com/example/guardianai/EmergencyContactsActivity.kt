@@ -52,11 +52,6 @@ class EmergencyContactsActivity : AppCompatActivity() {
 
         loadContactsFromFirebase()
     }
-
-    // =====================================================
-    // ADD CONTACT DIALOG
-    // =====================================================
-
     private fun showAddContactDialog() {
 
         val dialogView = LayoutInflater.from(this)
@@ -126,11 +121,6 @@ class EmergencyContactsActivity : AppCompatActivity() {
 
         dialog.show()
     }
-
-    // =====================================================
-    // SAVE CONTACT - DUPLICATE CHECK
-    // =====================================================
-
     private fun saveContactToFirebase(
         name: String,
         phone: String,
@@ -159,8 +149,6 @@ class EmergencyContactsActivity : AppCompatActivity() {
             .collection("emergencyContacts")
             .get()
             .addOnSuccessListener { documents ->
-
-                // Check duplicate name + phone
                 val duplicateExists = documents.any { document ->
 
                     val existingName =
@@ -175,10 +163,6 @@ class EmergencyContactsActivity : AppCompatActivity() {
                     ) && existingPhone == phone
                 }
 
-                // =====================================
-                // DUPLICATE FOUND
-                // =====================================
-
                 if (duplicateExists) {
 
                     Toast.makeText(
@@ -189,10 +173,6 @@ class EmergencyContactsActivity : AppCompatActivity() {
 
                     return@addOnSuccessListener
                 }
-
-                // =====================================
-                // SAVE NEW CONTACT
-                // =====================================
 
                 val contactData = hashMapOf(
                     "name" to name,
@@ -234,11 +214,6 @@ class EmergencyContactsActivity : AppCompatActivity() {
                 ).show()
             }
     }
-
-    // =====================================================
-    // LOAD CONTACTS
-    // =====================================================
-
     private fun loadContactsFromFirebase() {
 
         val currentUser = auth.currentUser
@@ -258,7 +233,6 @@ class EmergencyContactsActivity : AppCompatActivity() {
 
                 contactsContainer.removeAllViews()
 
-                // Prevent duplicate cards on screen
                 val displayedContacts =
                     mutableSetOf<String>()
 
@@ -273,7 +247,6 @@ class EmergencyContactsActivity : AppCompatActivity() {
                     val contactKey =
                         "$name|$phone"
 
-                    // Only display once
                     if (displayedContacts.add(contactKey)) {
 
                         showContact(
@@ -310,11 +283,6 @@ class EmergencyContactsActivity : AppCompatActivity() {
                 ).show()
             }
     }
-
-    // =====================================================
-    // SHOW CONTACT CARD
-    // =====================================================
-
     private fun showContact(
         name: String,
         phone: String,
@@ -356,7 +324,6 @@ class EmergencyContactsActivity : AppCompatActivity() {
         contactCard.strokeColor =
             Color.rgb(220, 222, 240)
 
-        // Main layout
         val mainLayout =
             LinearLayout(this)
 
@@ -379,7 +346,6 @@ class EmergencyContactsActivity : AppCompatActivity() {
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
 
-        // Icon
         val icon = TextView(this)
 
         icon.text = "👤"
@@ -404,7 +370,6 @@ class EmergencyContactsActivity : AppCompatActivity() {
             iconParams
         )
 
-        // Text layout
         val textLayout =
             LinearLayout(this)
 
@@ -421,7 +386,6 @@ class EmergencyContactsActivity : AppCompatActivity() {
                 1f
             )
 
-        // Name
         val nameText = TextView(this)
 
         nameText.text = name
@@ -436,7 +400,6 @@ class EmergencyContactsActivity : AppCompatActivity() {
             Color.rgb(24, 43, 91)
         )
 
-        // Phone
         val phoneText = TextView(this)
 
         phoneText.text = phone
@@ -461,7 +424,6 @@ class EmergencyContactsActivity : AppCompatActivity() {
             textParams
         )
 
-        // Delete button
         val deleteButton = TextView(this)
 
         deleteButton.text = "✕"
@@ -500,11 +462,6 @@ class EmergencyContactsActivity : AppCompatActivity() {
             contactCard
         )
     }
-
-    // =====================================================
-    // DELETE CONTACT
-    // =====================================================
-
     private fun deleteContact(
         documentId: String,
         name: String,
@@ -544,11 +501,6 @@ class EmergencyContactsActivity : AppCompatActivity() {
                 ).show()
             }
     }
-
-    // =====================================================
-    // DP TO PX
-    // =====================================================
-
     private fun dpToPx(dp: Int): Int {
 
         return (

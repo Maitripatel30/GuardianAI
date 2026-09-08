@@ -14,7 +14,6 @@ class NotificationHelper(private val context: Context) {
         const val CHANNEL_NAME = "Guardian AI Alerts"
         const val NOTIFICATION_ID = 1001
     }
-
     init {
         createNotificationChannel()
     }

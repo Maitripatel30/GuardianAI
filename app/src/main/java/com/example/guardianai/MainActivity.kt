@@ -56,33 +56,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
-
-        // =====================================
-        // FIREBASE
-        // =====================================
-
         auth =
             FirebaseAuth.getInstance()
 
         firestore =
             FirebaseFirestore.getInstance()
 
-        // =====================================
-        // LOCATION
-        // =====================================
 
         fusedLocationClient =
             LocationServices.getFusedLocationProviderClient(this)
 
-        // =====================================
-        // NOTIFICATION CHANNEL
-        // =====================================
-
         createNotificationChannel()
-
-        // =====================================
-        // FIND VIEWS
-        // =====================================
 
         val tvUserName =
             findViewById<TextView>(
@@ -119,10 +103,6 @@ class MainActivity : AppCompatActivity() {
                 R.id.navProfile
             )
 
-        // =====================================
-        // CHECK LOGIN
-        // =====================================
-
         val currentUser =
             auth.currentUser
 
@@ -140,10 +120,6 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-        // =====================================
-        // SHOW USER EMAIL
-        // =====================================
-
         val email =
             currentUser.email
 
@@ -158,27 +134,16 @@ class MainActivity : AppCompatActivity() {
                 "Welcome!"
         }
 
-        // =====================================
-        // SOS
-        // =====================================
-
         cardSOS.setOnClickListener {
 
             showSOSConfirmation()
         }
 
-        // =====================================
-        // LOCATION
-        // =====================================
 
         cardLocation.setOnClickListener {
 
             getCurrentLocation()
         }
-
-        // =====================================
-        // SAFETY CHECK
-        // =====================================
 
         cardSafetyCheck.setOnClickListener {
 
@@ -190,10 +155,6 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
-        // =====================================
-        // CONTACTS
-        // =====================================
-
         navContacts.setOnClickListener {
 
             startActivity(
@@ -203,10 +164,6 @@ class MainActivity : AppCompatActivity() {
                 )
             )
         }
-
-        // =====================================
-        // PROFILE
-        // =====================================
 
         navProfile.setOnClickListener {
 
@@ -218,10 +175,6 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
-        // =====================================
-        // NOTIFICATIONS
-        // =====================================
-
         ivNotification.setOnClickListener {
 
             startActivity(
@@ -232,12 +185,6 @@ class MainActivity : AppCompatActivity() {
             )
         }
     }
-
-
-    // =====================================================
-    // CREATE NOTIFICATION CHANNEL
-    // =====================================================
-
     private fun createNotificationChannel() {
 
         if (
@@ -265,12 +212,6 @@ class MainActivity : AppCompatActivity() {
             )
         }
     }
-
-
-    // =====================================================
-    // EMERGENCY NOTIFICATION
-    // =====================================================
-
     private fun showEmergencyNotification() {
 
         if (
@@ -349,13 +290,7 @@ class MainActivity : AppCompatActivity() {
                 notification
             )
     }
-
-
-    // =====================================================
-    // LOCATION
-    // =====================================================
-
-    private fun getCurrentLocation() {
+        private fun getCurrentLocation() {
 
         if (
             ContextCompat.checkSelfPermission(
@@ -414,11 +349,6 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
-
-    // =====================================================
-    // LOCATION DIALOG
-    // =====================================================
-
     private fun showLocationDialog(
         latitude: Double,
         longitude: Double
@@ -451,11 +381,6 @@ class MainActivity : AppCompatActivity() {
             )
             .show()
     }
-
-
-    // =====================================================
-    // OPEN GOOGLE MAPS
-    // =====================================================
 
     private fun openGoogleMaps(
         latitude: Double,
@@ -498,12 +423,6 @@ class MainActivity : AppCompatActivity() {
             )
         }
     }
-
-
-    // =====================================================
-    // SOS CONFIRMATION
-    // =====================================================
-
     private fun showSOSConfirmation() {
 
         AlertDialog.Builder(this)
@@ -527,11 +446,6 @@ class MainActivity : AppCompatActivity() {
             )
             .show()
     }
-
-
-    // =====================================================
-    // ACTIVATE SOS
-    // =====================================================
 
     private fun activateSOS() {
 
@@ -615,10 +529,6 @@ class MainActivity : AppCompatActivity() {
                     return@addOnSuccessListener
                 }
 
-                // =====================================
-                // SAVE NOTIFICATION
-                // =====================================
-
                 firestore
                     .collection("users")
                     .document(userId)
@@ -669,18 +579,10 @@ class MainActivity : AppCompatActivity() {
                     )
                 }
 
-                // =====================================
-                // SEND SMS
-                // =====================================
-
                 sendEmergencySMS(
                     names,
                     phones
                 )
-
-                // =====================================
-                // SHOW DIALOG
-                // =====================================
 
                 if (names.size == 1) {
 
@@ -726,11 +628,6 @@ class MainActivity : AppCompatActivity() {
                 ).show()
             }
     }
-
-
-    // =====================================================
-    // SEND EMERGENCY SMS
-    // =====================================================
 
     private fun sendEmergencySMS(
         names: List<String>,
@@ -785,11 +682,6 @@ class MainActivity : AppCompatActivity() {
             phones
         )
     }
-
-
-    // =====================================================
-    // GET LOCATION AND SEND SMS
-    // =====================================================
 
     @RequiresPermission(
         allOf = [
@@ -857,13 +749,7 @@ class MainActivity : AppCompatActivity() {
                 )
             }
     }
-
-
-    // =====================================================
-    // SEND SMS TO ALL CONTACTS
-    // =====================================================
-
-    private fun sendSMSToContacts(
+        private fun sendSMSToContacts(
         phones: List<String>,
         message: String
     ) {
@@ -899,11 +785,6 @@ class MainActivity : AppCompatActivity() {
             ).show()
         }
     }
-
-
-    // =====================================================
-    // MULTIPLE CONTACTS
-    // =====================================================
 
     private fun showMultipleContacts(
         names: List<String>,
@@ -942,11 +823,6 @@ class MainActivity : AppCompatActivity() {
             .show()
     }
 
-
-    // =====================================================
-    // CALL CONFIRMATION
-    // =====================================================
-
     private fun showCallConfirmation(
         name: String,
         phone: String
@@ -973,12 +849,6 @@ class MainActivity : AppCompatActivity() {
             )
             .show()
     }
-
-
-    // =====================================================
-    // MAKE PHONE CALL
-    // =====================================================
-
     private fun makePhoneCall(
         phone: String
     ) {
@@ -1017,11 +887,6 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-
-    // =====================================================
-    // PERMISSION RESULT
-    // =====================================================
-
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -1033,10 +898,6 @@ class MainActivity : AppCompatActivity() {
             permissions,
             grantResults
         )
-
-        // =====================================
-        // NOTIFICATION
-        // =====================================
 
         if (
             requestCode ==
@@ -1057,10 +918,6 @@ class MainActivity : AppCompatActivity() {
 
             }
         }
-
-        // =====================================
-        // LOCATION
-        // =====================================
 
         if (
             requestCode ==
@@ -1122,10 +979,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // =====================================
-        // SMS
-        // =====================================
-
         if (
             requestCode ==
             SMS_PERMISSION_CODE
@@ -1182,10 +1035,6 @@ class MainActivity : AppCompatActivity() {
                 ).show()
             }
         }
-
-        // =====================================
-        // CALL
-        // =====================================
 
         if (
             requestCode ==
