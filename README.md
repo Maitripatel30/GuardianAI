@@ -159,41 +159,15 @@ The Profile section provides information about the logged-in user and allows the
 The following screenshots show the main working screens and features of GuardianAI.
 
 <table>
-<tr>
-<td align="center"><b>🔐 Login</b></td>
-<td align="center"><b>🏠 Home Dashboard</b></td>
-</tr>
-<tr>
-<td align="center"><img src="./[screenshots/01_login.png](https://github.com/Maitripatel30/GuardianAI/blob/master/Screenshot%202026-09-15%20134748.png?raw=true)" width="250"></td>
-<td align="center"><img src="./https://github.com/Maitripatel30/GuardianAI/blob/master/Screenshot%202026-09-15%20134848.png?raw=true" width="250"></td>
-</tr>
-<tr>
-<td align="center"><b>👥 Emergency Contacts</b></td>
-<td align="center"><b>👤 Profile</b></td>
-</tr>
-<tr>
-<td align="center"><img src="./[screenshots/03_emergency_contacts.png](https://github.com/Maitripatel30/GuardianAI/blob/master/Screenshot%202026-09-15%20134904.png?raw=true)" width="250"></td>
-<td align="center"><img src="./[screenshots/04_profile.png](https://github.com/Maitripatel30/GuardianAI/blob/master/Screenshot%202026-09-15%20134928.png?raw=true)" width="250"></td>
-</tr>
-<tr>
-<td align="center"><b>🚨 SOS Alert</b></td>
-<td align="center"><b>📍 Location Sharing</b></td>
-</tr>
-<tr>
-<td align="center"><img src="./[screenshots/05_sos_alert.png](https://github.com/Maitripatel30/GuardianAI/blob/master/Screenshot%202026-09-15%20134947.png?raw=true)" width="250"></td>
-<td align="center"><img src="./[screenshots/06_location_sharing.png](https://github.com/Maitripatel30/GuardianAI/blob/master/Screenshot%202026-09-15%20135001.png?raw=true)" width="250"></td>
-</tr>
-<tr>
-<td align="center"><b>🛡️ Safety Check</b></td>
-<td align="center"><b>📊 Emergency History</b></td>
-</tr>
-<tr>
-<td align="center"><img src="./[screenshots/07_safety_check.png](https://github.com/Maitripatel30/GuardianAI/blob/master/Screenshot%202026-09-15%20135017.png?raw=true)" width="250"></td>
-<td align="center"><img src="./screenshots/[08_emergency_history.png](https://github.com/Maitripatel30/GuardianAI/blob/master/Screenshot%202026-09-15%20135039.png?raw=true)" width="250"></td>
-</tr>
+<tr><td align="center"><b>🔐 Login</b></td><td align="center"><b>🏠 Home Dashboard</b></td></tr>
+<tr><td align="center"><img src="https://github.com/Maitripatel30/GuardianAI/blob/master/Screenshot%202026-09-15%20134748.png?raw=true" width="250"></td><td align="center"><img src="https://github.com/Maitripatel30/GuardianAI/blob/master/Screenshot%202026-09-15%20134848.png?raw=true" width="250"></td></tr>
+<tr><td align="center"><b>👥 Emergency Contacts</b></td><td align="center"><b>👤 Profile</b></td></tr>
+<tr><td align="center"><img src="https://github.com/Maitripatel30/GuardianAI/blob/master/Screenshot%202026-09-15%20134904.png?raw=true" width="250"></td><td align="center"><img src="https://github.com/Maitripatel30/GuardianAI/blob/master/Screenshot%202026-09-15%20134928.png?raw=true" width="250"></td></tr>
+<tr><td align="center"><b>🚨 SOS Alert</b></td><td align="center"><b>📍 Location Sharing</b></td></tr>
+<tr><td align="center"><img src="https://github.com/Maitripatel30/GuardianAI/blob/master/Screenshot%202026-09-15%20134947.png?raw=true" width="250"></td><td align="center"><img src="https://github.com/Maitripatel30/GuardianAI/blob/master/Screenshot%202026-09-15%20135001.png?raw=true" width="250"></td></tr>
+<tr><td align="center"><b>🛡️ Safety Check</b></td><td align="center"><b>📊 Emergency History</b></td></tr>
+<tr><td align="center"><img src="https://github.com/Maitripatel30/GuardianAI/blob/master/Screenshot%202026-09-15%20135017.png?raw=true" width="250"></td><td align="center"><img src="https://github.com/Maitripatel30/GuardianAI/blob/master/Screenshot%202026-09-15%20135039.png?raw=true" width="250"></td></tr>
 </table>
-
-Note: The screenshot files must be present in the repository under the screenshots folder with the filenames used above.
 
 🏗️ Technology Stack
 
@@ -256,21 +230,21 @@ GuardianAI uses Cloud Firestore to store user-specific emergency data.
 users
 │
 └── {userId}
-    │
-    ├── emergencyContacts
-    │   │
-    │   └── {contactId}
-    │       ├── name
-    │       └── phone
-    │
-    └── notifications
-        │
-        └── {notificationId}
-            ├── type
-            ├── title
-            ├── description
-            ├── time
-            └── timestamp
+│
+├── emergencyContacts
+│   │
+│   └── {contactId}
+│       ├── name
+│       └── phone
+│
+└── notifications
+│
+└── {notificationId}
+├── type
+├── title
+├── description
+├── time
+└── timestamp
 
 The Firebase Authentication UID is used to associate data with the correct user.
 
@@ -292,8 +266,8 @@ GuardianAI
 ├── EmergencyHistoryAdapter
 │
 └── Firebase
-    ├── Authentication
-    └── Cloud Firestore
+├── Authentication
+└── Cloud Firestore
 
 🔑 Android Permissions
 
@@ -313,71 +287,71 @@ Required permissions are requested at runtime where applicable.
 
 🔄 Application Workflow
 
-                    GuardianAI
-                         │
-                         ▼
-                  Splash Screen
-                         │
-                         ▼
-                  Login / Signup
-                         │
-                         ▼
-                   Main Dashboard
-                         │
-          ┌──────────────┼──────────────┐
-          │              │              │
-          ▼              ▼              ▼
-     Emergency       Location       Safety Check
-      Contacts        Sharing
-          │              │              │
-          └──────────────┼──────────────┘
-                         │
-                         ▼
-                Emergency Activities
-                         │
-             ┌───────────┼───────────┐
-             ▼           ▼           ▼
-            SOS         Call      Notifications
-             │
-             ▼
-      Emergency History
+                GuardianAI
+                     │
+                     ▼
+              Splash Screen
+                     │
+                     ▼
+              Login / Signup
+                     │
+                     ▼
+               Main Dashboard
+                     │
+      ┌──────────────┼──────────────┐
+      │              │              │
+      ▼              ▼              ▼
+ Emergency       Location       Safety Check
+  Contacts        Sharing
+      │              │              │
+      └──────────────┼──────────────┘
+                     │
+                     ▼
+            Emergency Activities
+                     │
+         ┌───────────┼───────────┐
+         ▼           ▼           ▼
+        SOS         Call      Notifications
+         │
+         ▼
+  Emergency History
 
 🚨 SOS Workflow
 
 User presses SOS
-       ↓
+↓
 Confirmation Dialog
-       ↓
+↓
 Load Emergency Contacts
-       ↓
+↓
 Check Permissions
-       ↓
+↓
 Get Current Location
-       ↓
+↓
 Generate Google Maps Link
-       ↓
+↓
 Send Emergency SMS
-       ↓
+↓
 Save SOS Activity
-       ↓
+↓
 Show Emergency Notification
 
 📍 Location Sharing Workflow
 
 User presses Location
-        ↓
+↓
 Load Emergency Contacts
-        ↓
+↓
 Check Location & SMS Permissions
-        ↓
+↓
 Get Current Location
-        ↓
+↓
 Latitude + Longitude
-        ↓
+↓
 Generate Google Maps Link
-        ↓
+↓
 Send Location through SMS
-        ↓
+↓
 Save Location Activity
 
 🎯 Project Objectives
@@ -462,15 +436,15 @@ Future versions of GuardianAI could include:
 
 ⚙️ Installation
 
-1. Clone the Repository
+Clone the Repository
 
 git clone https://github.com/Maitripatel30/GuardianAI.git
 
-2. Open in Android Studio
+Open in Android Studio
 
 Open the cloned project using Android Studio.
 
-3. Configure Firebase
+Configure Firebase
 
 Create a Firebase project and enable:
 
@@ -490,11 +464,11 @@ app/
 
 Do not commit private credentials or sensitive configuration files to a public repository.
 
-4. Sync Gradle
+Sync Gradle
 
 Allow Android Studio to sync all Gradle dependencies.
 
-5. Run the Application
+Run the Application
 
 Connect an Android device or use an Android emulator and run the application.
 
